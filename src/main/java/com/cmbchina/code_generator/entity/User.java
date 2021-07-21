@@ -14,5 +14,5 @@ public class User {
     int age;        // 对应数据库里面的年龄
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    Timestamp updatedTime;
+    Timestamp updateTime;
 }
