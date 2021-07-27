@@ -4,6 +4,8 @@ import com.cmbchina.code_generator.model.Result;
 import com.cmbchina.code_generator.service.UserService;
 import com.cmbchina.code_generator.entity.User;
 import com.cmbchina.code_generator.utils.FormatNameUtils;
+import com.cmbchina.code_generator.model.Attribute;
+import com.cmbchina.code_generator.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiImplicitParam;
