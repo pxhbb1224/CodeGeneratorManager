@@ -71,8 +71,8 @@ public class FormatNameUtils {
         for(String str : foreignList)
         {
             String[] temp = str.split("/");
-            res += "constraint" + " " + temp[0] + "_" + temp[1] +" foreign key"
-                    + "(" + temp[0] + ")" + " references" + " " + temp[1] + ",";
+            res += "constraint" + " " + temp[0] + "_" + temp[1].substring(0, temp[1].indexOf(" "))
+                    + " foreign key" + "(" + temp[0] + ")" + " references" + " " + temp[1] + ",";
         }
         res  = res.substring(0, res.length() - 1) + ")";
         return res;

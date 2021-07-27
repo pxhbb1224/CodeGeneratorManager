@@ -20,10 +20,11 @@ public class Attribute {
         nameId = "type_name";
         typeName = "varchar";
         length = new ArrayList<>();
+        length.add(255);
         isNotNull = true;
         isPrimary = false;
         isUnique = true;
-        foreignKey = "dept(name) update cascade";
+        foreignKey = "";
     }
     public Attribute(int i)
     {
@@ -35,6 +36,6 @@ public class Attribute {
         isNotNull = true;
         isPrimary = true;
         isUnique = true;
-        foreignKey = "dept(id) update cascade";
+        foreignKey = "";
     }
 }

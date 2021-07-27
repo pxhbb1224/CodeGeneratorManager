@@ -11,8 +11,10 @@ public class Table {
     private List<Attribute>  table;
     public Table()
     {
-        tableName = null;
+        tableName = "tb_test";
         table = new ArrayList<>();
+        table.add(new Attribute(1));
+        table.add(new Attribute());
     }
     public void setTableName(String tableName)
     {
