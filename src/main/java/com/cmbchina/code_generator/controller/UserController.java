@@ -1,11 +1,11 @@
 package com.cmbchina.code_generator.controller;
 
 import com.cmbchina.code_generator.dao.UserDao;
+import com.cmbchina.code_generator.model.Attribute;
 import com.cmbchina.code_generator.model.Result;
 import com.cmbchina.code_generator.service.UserService;
 import com.cmbchina.code_generator.entity.User;
 import com.cmbchina.code_generator.utils.FormatNameUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
 import com.cmbchina.code_generator.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +49,25 @@ public class UserController {
             return Result.fail(e);
         }
     }
-
+    @PostMapping("/generator")
+    public Result receiveString(@RequestBody Table table)
+    {
+        try {
+            String tableName = table.getTableName();
+            System.out.println("表名"+tableName);
+            List<Attribute> attributes = table.getProperties();
+            for(Attribute a : attributes)
+            {
+                System.out.println("字段"+a);
+            }
+            String generateTime = table.getGenerateTime();
+            System.out.println("生成时间"+generateTime);
+            return Result.success(userDao.createTable(table));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
     /**
      * @Title: getList
      * @Description:  获取用户列表

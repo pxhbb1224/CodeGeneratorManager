@@ -37,36 +37,34 @@ public class FormatNameUtils {
      */
     public static String formatToSql(Table table)
     {
-        int length = table.getAttributeNum();
         String res = "create table ";
         List<String> foreignList = new ArrayList<>();
         res += table.getTableName();
         res += "(";
-        for(Attribute a: table.getTable())
+        for(Attribute a: table.getProperties())
         {
-            res += a.getNameId() + " " + a.getTypeName();
-            if(a.getLength().size() > 0)
+            res += a.getName() + " " + a.getType();
+            if(a.getLength() > 0)
             {
                 res += "(";
-                for(int i : a.getLength())
-                {
-                    res += String.valueOf(i) + ",";
-                }
-                res = res.substring(0, res.length() - 1) + ")" ;
+                res += String.valueOf(a.getLength());
+                if(a.getType().equals("float")|| a.getType().equals("decimal")||a.getType().equals("double"))
+                    res += "," + a.getPrecision();
+                res += ")";
             }
-            if(a.isPrimary())
+            if(a.getIsPrimary() == 1)
                 res += " " + "primary key";
             else
             {
-                if(a.isUnique())
+                if(a.getIsUnique() == 1)
                     res += " " + "unique";
-                if(a.isNotNull())
+                if(a.getIsNotNull() == 1)
                     res += " " + "not null";
             }
 
             res += ",";
-            if(a.getForeignKey().length() > 0)
-                foreignList.add(a.getNameId() + "/" + a.getForeignKey());
+            /*if(a.getForeignKey().length() > 0)
+                foreignList.add(a.getName() + "/" + a.getForeignKey());*/
         }
         for(String str : foreignList)
         {

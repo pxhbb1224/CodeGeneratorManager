@@ -1,16 +1,12 @@
 package com.cmbchina.code_generator.dao.impl;
 
 import com.cmbchina.code_generator.dao.UserDao;
-import com.cmbchina.code_generator.entity.User;
 import com.cmbchina.code_generator.mapper.UserMapper;
-import com.cmbchina.code_generator.model.Attribute;
 import com.cmbchina.code_generator.model.Table;
-import com.cmbchina.code_generator.utils.FormatNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+
 
 import static com.cmbchina.code_generator.utils.FormatNameUtils.formatToSql;
 

@@ -1,5 +1,7 @@
 package com.cmbchina.code_generator.utils;
 
+import com.cmbchina.code_generator.model.Table;
+
 /**
  * 数据库工具类
  * @author Bin
@@ -19,4 +21,8 @@ public class DataBaseUtils {
         return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
     }
 
+    public static Table generateTable(String str)
+    {
+        return new Table();
+    }
 }

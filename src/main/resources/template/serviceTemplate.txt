@@ -1,0 +1,12 @@
+package ${packgePath};
+
+
+/**
+ * ${classDescription}
+ * @author ${author}
+ * @datatime ${datatime}
+ */
+public interface ${className}Service  {
+
+
+}
