@@ -1,7 +1,6 @@
 package com.cmbchina.code_generator.mapper;
 
 import com.cmbchina.code_generator.entity.User;
-import com.cmbchina.code_generator.model.Table;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

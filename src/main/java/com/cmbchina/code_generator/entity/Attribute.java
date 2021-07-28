@@ -1,4 +1,4 @@
-package com.cmbchina.code_generator.model;
+package com.cmbchina.code_generator.entity;
 
 import java.util.List;
 import java.util.ArrayList;

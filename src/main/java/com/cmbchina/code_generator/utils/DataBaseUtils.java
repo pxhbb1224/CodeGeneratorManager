@@ -1,6 +1,6 @@
 package com.cmbchina.code_generator.utils;
 
-import com.cmbchina.code_generator.model.Table;
+import com.cmbchina.code_generator.entity.Table;
 
 /**
  * 数据库工具类

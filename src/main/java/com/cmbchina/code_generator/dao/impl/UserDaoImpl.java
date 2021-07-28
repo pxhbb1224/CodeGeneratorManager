@@ -2,7 +2,7 @@ package com.cmbchina.code_generator.dao.impl;
 
 import com.cmbchina.code_generator.dao.UserDao;
 import com.cmbchina.code_generator.mapper.UserMapper;
-import com.cmbchina.code_generator.model.Table;
+import com.cmbchina.code_generator.entity.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     username: root
-    password: K512cdnk
+    password: root
     url: jdbc:mysql://localhost:3306/db?characterEncoding=utf-8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -16,6 +16,22 @@ mybatis:
   # 开启驼峰命名 （即 entity 中的 类变量叫 userName 对应 数据库表中的 user_name）
   configuration:
     map-underscore-to-camel-case: true
+
+codegenerator:
+  #全局配置
+  global:
+    #作者(可修改)
+    author: Bin
+    #生成文件的包总路径 (可修改)
+    packge-path: com.cmbchina.code_generator
+    #模板的总路径(不可修改)
+    template-base-path: classpath:template/
+    #生成文件的总路径-绝对路径(可修改)
+    write-file-base-path: C:\Users\lenovo\Documents\GitHub\CodeGeneratorManager\src\main\resources\result\
+    #数据库表前缀(可修改)
+    table-prefix: tb_
+    #mybatis生成的路径 (可修改)
+    mapper-path: C:\Users\lenovo\Documents\GitHub\springboot-code-generator\src\main\resources\result\
 
 #showSql
 logging:

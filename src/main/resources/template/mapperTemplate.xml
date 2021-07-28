@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${daoPackgePath}.${className}Dao">
+    <!-- 实体字段 -->
+    <sql id="${alias}Columns">
+        ${Columms}
+    </sql>
+
+    <!--根据ID查找实体 -->
+    <select id="findById" resultType="${alias}">
+        SELECT
+        <include refid="${alias}Columns"></include>
+        FROM ${tableName} ${alias}
+        <where>
+            <if test="id!=null and id!=''">
+                AND ${alias}.id=#{id}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 新增 -->
+    <insert id="insert" >
+        INSERT INTO ${tableName} (
+            ${insertColumms}
+        ) VALUES (
+                     ${insertValues}
+                 )
+    </insert>
+
+
+
+    <!-- 修改 -->
+    <update id="update" >
+        UPDATE ${tableName} ${alias}
+        <set>
+            ${updateColumms}
+        </set>
+        <where>
+            1=1
+            AND ${alias}.id=#{id}
+        </where>
+    </update>
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteById" >
+        DELETE FROM ${tableName} WHERE id=#{id}
+    </delete>
+
+
+
+</mapper>

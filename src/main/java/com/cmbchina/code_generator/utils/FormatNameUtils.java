@@ -1,7 +1,7 @@
 package com.cmbchina.code_generator.utils;
 
-import com.cmbchina.code_generator.model.Table;
-import com.cmbchina.code_generator.model.Attribute;
+import com.cmbchina.code_generator.entity.Table;
+import com.cmbchina.code_generator.entity.Attribute;
 
 import java.util.List;
 import java.util.ArrayList;

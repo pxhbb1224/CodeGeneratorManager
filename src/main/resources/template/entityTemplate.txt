@@ -1,0 +1,22 @@
+package ${packgePath};
+
+import org.apache.ibatis.type.Alias;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+/**
+ * ${classDescription}
+ * @author ${author}
+ * @datatime ${datatime}
+ */
+@Alias(value = "${alias}")
+@Table(name="${table}")
+public class ${className}  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+
+${entityData}
+
+
+}
