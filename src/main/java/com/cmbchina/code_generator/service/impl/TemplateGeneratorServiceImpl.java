@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-public class TemplateGeneratorServiceImpl {
+public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
@@ -121,7 +121,7 @@ public class TemplateGeneratorServiceImpl {
      */
     /*private String getWriteFileName(String name, String tableName) {
         if (TemplateCommon.entity.equals(name)) {
-            return tableColumnsService.getClassName(tableName) + TemplateCommon.javaSuffix;
+            return tableColumnsService.getClassName(tableName) + TemplateCommon.javaEntitySuffix;
         } else if (TemplateCommon.dao.equals(name)) {
             return tableColumnsService.getClassName(tableName) + TemplateCommon.javaDaoSuffix;
         } else if (TemplateCommon.service.equals(name)) {
@@ -166,6 +166,76 @@ public class TemplateGeneratorServiceImpl {
 
     }*/
 
+    /**
+     * 创建实体模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createEntityTemplate(String tableName, String classDescription)
+    {
 
+    }
+
+    /**
+     * 创建DAO模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createDaoTemplate(String tableName, String classDescription)
+    {
+
+    }
+
+    /**
+     * 创建service模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createServiceTemplate(String tableName, String classDescription)
+    {
+
+    }
+
+    /**
+     * 创建service实现类模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createServiceImplTemplate(String tableName, String classDescription)
+    {
+
+    }
+
+    /**
+     * 创建控制器模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createControllerTemplate(String tableName, String classDescription)
+    {
+
+    }
+
+    /**
+     * 创建mybaits-mapper模板
+     * @author Bin
+     * @param tableName
+     * @param classDescription
+     */
+    @Override
+    public void createMapperTemplate(String tableName, String classDescription)
+    {
+
+    }
 
 }

@@ -20,9 +20,4 @@ public class DataBaseUtils {
     {
         return url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
     }
-
-    public static Table generateTable(String str)
-    {
-        return new Table();
-    }
 }

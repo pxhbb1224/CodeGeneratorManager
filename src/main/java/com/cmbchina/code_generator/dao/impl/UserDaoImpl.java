@@ -1,6 +1,8 @@
 package com.cmbchina.code_generator.dao.impl;
 
 import com.cmbchina.code_generator.dao.UserDao;
+import com.cmbchina.code_generator.entity.Config;
+import com.cmbchina.code_generator.entity.UserData;
 import com.cmbchina.code_generator.mapper.UserMapper;
 import com.cmbchina.code_generator.entity.Table;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import static com.cmbchina.code_generator.utils.FormatNameUtils.formatToSql;
 public class UserDaoImpl implements UserDao{
     @Autowired
     private UserMapper userMapper;
+
+    private UserData userData = new UserData();
+
     @Override
     public boolean createTable(Table table) {
         try
@@ -28,6 +33,7 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+
     @Override
     public boolean isTableExists(String tableName)
     {
@@ -40,5 +46,17 @@ public class UserDaoImpl implements UserDao{
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void addTable(Table table)
+    {
+        userData.getTableList().add(table);
+    }
+
+    @Override
+    public void setConfig(Config config)
+    {
+        userData.setConfig(config);
     }
 }

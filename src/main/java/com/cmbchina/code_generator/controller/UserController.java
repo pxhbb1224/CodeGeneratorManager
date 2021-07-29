@@ -1,11 +1,9 @@
 package com.cmbchina.code_generator.controller;
 
 import com.cmbchina.code_generator.dao.UserDao;
-import com.cmbchina.code_generator.entity.Attribute;
+import com.cmbchina.code_generator.entity.*;
 import com.cmbchina.code_generator.model.Result;
 import com.cmbchina.code_generator.service.UserService;
-import com.cmbchina.code_generator.entity.User;
-import com.cmbchina.code_generator.entity.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiImplicitParam;
@@ -49,7 +47,7 @@ public class UserController {
         }
     }
     @PostMapping("/generator")
-    public Result receiveString(@RequestBody Table table)
+    public Result receiveTable(@RequestBody Table table)
     {
         try {
             String tableName = table.getTableName();
@@ -62,6 +60,31 @@ public class UserController {
             String generateTime = table.getGenerateTime();
             System.out.println("生成时间"+generateTime);
             return Result.success(userDao.createTable(table));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
+    @PostMapping("/config")
+    public Result receiveConfig(@RequestBody Config config)
+    {
+        try {
+            String packageName = config.getPackageName();
+            System.out.println("包名"+packageName);
+            String authorName = config.getAuthorName();
+            System.out.println("作者名"+authorName);
+            String moduleName = config.getModuleName();
+            System.out.println("模块名"+moduleName);
+            String frontEndPath = config.getFrontEndPath();
+            System.out.println("前端名"+frontEndPath);
+            String interfaceName = config.getInterfaceName();
+            System.out.println("接口名"+interfaceName);
+            String prefix = config.getPrefix();
+            System.out.println("前缀名"+prefix);
+            int needCovered = config.getNeedCovered();
+            System.out.println(needCovered == 1?"":"不" + "会覆盖");
+            return Result.success(config);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
