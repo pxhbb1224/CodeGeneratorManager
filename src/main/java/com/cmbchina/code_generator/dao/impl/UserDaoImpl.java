@@ -59,4 +59,7 @@ public class UserDaoImpl implements UserDao{
     {
         userData.setConfig(config);
     }
+
+    @Override
+    public UserData getUserData() { return userData; }
 }

@@ -12,25 +12,29 @@ import java.util.ArrayList;
 public class FormatNameUtils {
 
     /**
-     * 去掉下划线，格式名称，驼峰写法，首字符小写
+     * 去掉下划线，格式名称，驼峰写法，首字符根据capitalized决定大小写
      * 格式化name User->user UserRole->userRole
-     * @param ColumnName
+     * @param columnName,capitalized
      * @return
      * @author Bin
      */
-    public static String formatNameCamelbak(String ColumnName) {
-        String arr[] = ColumnName.split("_");
-        ColumnName = "";
-        ColumnName += arr[0].substring(0, 1).toLowerCase() + arr[0].substring(1);
-        for (int i = 1; i < arr.length; i++) {
-            ColumnName += arr[i].substring(0, 1).toUpperCase() + arr[i].substring(1);
+    public static String formatNameCamelCase(String columnName, boolean capitalized) {
+        String arr[] = columnName.split("_");
+        columnName = "";
+        int index = 0;
+        if(!capitalized)
+        {
+            columnName += arr[0].substring(0, 1).toLowerCase() + arr[0].substring(1);
+            index++;
         }
-        return ColumnName;
+        for (; index < arr.length; index++) {
+            columnName += arr[index].substring(0, 1).toUpperCase() + arr[index].substring(1);
+        }
+        return columnName;
     }
 
     /**
-     * 去掉下划线，格式名称，驼峰写法，首字符小写
-     * 格式化name User->user UserRole->userRole
+     * 将数据库表结构转化为创建语句
      * @param table
      * @return String
      * @author Bin

@@ -1,51 +1,64 @@
 package com.cmbchina.code_generator.service;
 
+import com.cmbchina.code_generator.entity.Config;
+import com.cmbchina.code_generator.entity.Table;
+import com.cmbchina.code_generator.entity.UserData;
+
+
 public interface TemplateGeneratorService {
+
     /**
      * 创建实体模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createEntityTemplate(String tableName, String classDescription);
+    void createEntityTemplate(Table table, Config config, String classDescription);
     /**
      * 创建DAO模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createDaoTemplate(String tableName, String classDescription);
+    void createDaoTemplate(Table table, Config config,String classDescription);
 
     /**
      * 创建service模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createServiceTemplate(String tableName, String classDescription);
+    void createServiceTemplate(Table table, Config config,String classDescription);
 
     /**
      * 创建service实现类模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createServiceImplTemplate(String tableName, String classDescription) ;
+    void createServiceImplTemplate(Table table, Config config, String classDescription) ;
 
     /**
      * 创建控制器模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createControllerTemplate(String tableName, String classDescription);
+    void createControllerTemplate(Table table, Config config, String classDescription);
 
     /**
      * 创建mybaits-mapper模板
      * @author Bin
-     * @param tableName
+     * @param table
+     * @param config
      * @param classDescription
      */
-    void createMapperTemplate(String tableName, String classDescription);
+    void createMapperTemplate(Table table, Config config, String classDescription);
 
+    boolean generateCode(UserData userData);
 }

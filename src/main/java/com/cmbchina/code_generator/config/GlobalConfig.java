@@ -19,7 +19,7 @@ public class GlobalConfig {
     /**
      * 包路径
      */
-    private String packgePath;
+    private String packagePath;
     /**
      * 读取模板总路径
      */

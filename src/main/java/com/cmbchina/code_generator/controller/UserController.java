@@ -3,6 +3,7 @@ package com.cmbchina.code_generator.controller;
 import com.cmbchina.code_generator.dao.UserDao;
 import com.cmbchina.code_generator.entity.*;
 import com.cmbchina.code_generator.model.Result;
+import com.cmbchina.code_generator.service.TemplateGeneratorService;
 import com.cmbchina.code_generator.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,13 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private TemplateGeneratorService generatorService;
+
     @GetMapping("/createTable")
     public Result createTable()
     {
@@ -59,6 +65,7 @@ public class UserController {
             }
             String generateTime = table.getGenerateTime();
             System.out.println("生成时间"+generateTime);
+            userDao.addTable(table);
             return Result.success(userDao.createTable(table));
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,8 +91,22 @@ public class UserController {
             System.out.println("前缀名"+prefix);
             int needCovered = config.getNeedCovered();
             System.out.println(needCovered == 1?"":"不" + "会覆盖");
+            userDao.setConfig(config);
             return Result.success(config);
         } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
+    @GetMapping("/generate")
+    public Result sendCode()
+    {
+        try
+        {
+            return Result.success(generatorService.generateCode(userDao.getUserData()));
+        }catch(Exception e)
+        {
             e.printStackTrace();
             return Result.fail(e);
         }
