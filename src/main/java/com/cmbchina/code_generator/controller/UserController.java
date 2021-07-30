@@ -52,7 +52,7 @@ public class UserController {
             return Result.fail(e);
         }
     }
-    @PostMapping("/generator")
+    @PostMapping("/table")
     public Result receiveTable(@RequestBody Table table)
     {
         try {

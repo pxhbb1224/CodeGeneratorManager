@@ -15,5 +15,6 @@ public class Attribute {
     private int isPrimary;
     private int isUnique;
     //private String foreignKey;
+    private String comment;
 
 }

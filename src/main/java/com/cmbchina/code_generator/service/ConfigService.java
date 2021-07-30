@@ -70,10 +70,10 @@ public interface ConfigService {
      *
      * @author JohnDeng
      * @datatime 2019年1月17日上午11:13:13
-     * @param tableName
+     * @param table
      * @return
      */
-    String getEntityData(String tableName);
+    String getEntityData(Table table);
 
     /**
      * 获取属性注释

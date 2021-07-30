@@ -184,11 +184,11 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         String prefix = "";
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.entity));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("packgePath", getPackagePath(TemplateCommon.entity));
         map.put("alias", configService.getAliasName(table.getTableName(), prefix));
         map.put("table", table.getTableName());
-        map.put("entityData", configService.getEntityData(table.getTableName()));
+        map.put("entityData", configService.getEntityData(table));
 
         fileName = ReplaceUtils.replace(fileName, map);
 
@@ -210,7 +210,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
 
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.dao));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("packgePath", getPackagePath(TemplateCommon.dao));
 
         fileName = ReplaceUtils.replace(fileName, map);
@@ -234,7 +234,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
 
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.service));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("packagePath", getPackagePath(TemplateCommon.service));
 
         fileName = ReplaceUtils.replace(fileName, map);
@@ -257,7 +257,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         logger.info(">>>>>开始创建ServiceImpl<<<<<");
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.serviceImpl));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("lowerClassName", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
         map.put("packgePath", getPackagePath(TemplateCommon.serviceImpl));
         map.put("daoPackgePath", getPackagePath(TemplateCommon.dao));
@@ -284,7 +284,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         logger.info(">>>>>开始创建controller<<<<<");
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.controller));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("packgePath", getPackagePath(TemplateCommon.controller));
         map.put("servicePackgePath", getPackagePath(TemplateCommon.service));
         map.put("lowerClassName", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
@@ -309,16 +309,15 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         logger.info(">>>>>开始创建Mapper<<<<<");
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.mapper));
 
-        Map<String, Object> map = replaceMap(table.getTableName(), classDescription);
+        Map<String, Object> map = replaceMap(table, classDescription);
         map.put("tableName", table.getTableName());
         map.put("className", configService.getClassName(table.getTableName(), prefix));
         map.put("alias", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
         map.put("daoPackagePath",  getPackagePath(TemplateCommon.dao));
-        map.put("Columns", myBatisMapperService.getMapperColumns(table.getTableName()));
-        map.put("insertColumns", myBatisMapperService.getInsertColums(table.getTableName()));
-        map.put("insertBatchValues", myBatisMapperService.getInsertBatchValue(table.getTableName()));
-        map.put("insertValues", myBatisMapperService.getInsertValues(table.getTableName()));
-        map.put("updateColumns", myBatisMapperService.getUpdateColumms(table.getTableName()));
+        //map.put("Columns", ConfigService.getMapperColumns(table));
+        //map.put("insertColumns", ConfigService.getInsertColumns(table));
+        //map.put("insertValues", ConfigService.getInsertValues(table.getTableName()));
+        //map.put("updateColumns", ConfigService.getUpdateColumns(table.getTableName()));
 
         fileName = ReplaceUtils.replace(fileName, map);
 

@@ -3,7 +3,7 @@
 <mapper namespace="${daoPackgePath}.${className}Dao">
     <!-- 实体字段 -->
     <sql id="${alias}Columns">
-        ${Columms}
+        ${Columns}
     </sql>
 
     <!--根据ID查找实体 -->
@@ -22,7 +22,7 @@
     <!-- 新增 -->
     <insert id="insert" >
         INSERT INTO ${tableName} (
-            ${insertColumms}
+            ${insertColumns}
         ) VALUES (
                      ${insertValues}
                  )
@@ -34,7 +34,7 @@
     <update id="update" >
         UPDATE ${tableName} ${alias}
         <set>
-            ${updateColumms}
+            ${updateColumns}
         </set>
         <where>
             1=1
