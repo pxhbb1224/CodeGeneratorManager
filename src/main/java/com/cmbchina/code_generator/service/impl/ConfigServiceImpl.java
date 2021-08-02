@@ -142,4 +142,80 @@ public class ConfigServiceImpl implements ConfigService{
                 "     " + comments + "\n" +
                 "     */\n";
     }
+
+
+    @Override
+    public String getMapperColumns(Table table, String prefix)
+    {
+        StringBuilder columns = new StringBuilder();
+        boolean flag = false;
+        for (Attribute a : table.getProperties()) {
+            if (flag) {
+                columns.append(",\n");
+            }
+            columns.append("		");
+            columns.append(getAliasName(table.getTableName(), prefix));
+            columns.append(".");
+            columns.append(a.getName());
+            columns.append(" AS ");
+            columns.append(FormatNameUtils.formatNameCamelCase(a.getName(), false));
+            flag = true;
+        }
+        return columns.toString();
+    }
+
+    @Override
+    public String getInsertColumns(Table table)
+    {
+        StringBuilder insertColumns = new StringBuilder();
+        boolean flag = false;
+        for (Attribute a : table.getProperties()) {
+            if (flag) {
+                insertColumns.append(",\n");
+            }
+            insertColumns.append("			");
+            insertColumns.append(a.getName());
+            flag = true;
+        }
+        return insertColumns.toString();
+    }
+
+    @Override
+    public String getInsertValues(Table table)
+    {
+        StringBuilder insertValues = new StringBuilder();
+        boolean flag = false;
+        for (Attribute a : table.getProperties()) {
+            if (flag) {
+                insertValues.append(",\n");
+            }
+            insertValues.append("			");
+            insertValues.append("#{");
+            insertValues.append(FormatNameUtils.formatNameCamelCase(a.getName(), false));
+            insertValues.append("}");
+            flag = true;
+        }
+        return insertValues.toString();
+    }
+
+    @Override
+    public String getUpdateColumns(Table table)
+    {
+        StringBuilder updateValues = new StringBuilder();
+        boolean flag = false;
+
+        for (Attribute a : table.getProperties()) {
+            if (flag) {
+                updateValues.append("\n");
+            }
+            updateValues.append("			");
+            updateValues.append("<if test=\"" + FormatNameUtils.formatNameCamelCase(a.getName(), false) + "!=null\">");
+            updateValues.append(a.getName());
+            updateValues.append("=#{");
+            updateValues.append(FormatNameUtils.formatNameCamelCase(a.getName(), false));
+            updateValues.append("},</if>");
+            flag = true;
+        }
+        return updateValues.toString();
+    }
 }

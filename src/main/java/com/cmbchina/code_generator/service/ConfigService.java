@@ -83,4 +83,12 @@ public interface ConfigService {
      */
     String  getPropertyComments(String comments);
 
+    String getMapperColumns( Table table, String prefix);
+
+    String getInsertColumns(Table table);
+
+    String getInsertValues(Table table);
+
+    String getUpdateColumns(Table table);
+
 }

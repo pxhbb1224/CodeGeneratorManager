@@ -1,15 +1,15 @@
-package ${packgePath};
+package ${packagePath};
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ${servicePackgePath}.${className}Service;
+import ${servicePackagePath}.${className}Service;
 
 /**
  * ${classDescription}
  * @author ${author}
- * @datatime ${datatime}
+ * @datetime ${dateTime}
  */
 @RestController
 @RequestMapping("/${lowerClassName}")

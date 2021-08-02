@@ -1,16 +1,16 @@
-package ${packgePath};
+package ${packagePath};
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ${daoPackgePath}.${className}Dao;
-import ${servicePackgePath}.${className}Service;
+import ${daoPackagePath}.${className}Dao;
+import ${servicePackagePath}.${className}Service;
 /**
  * ${classDescription}
  * @author ${author}
- * @datatime ${datatime}
+ * @datetime ${dateTime}
  */
 @Service
 public class ${className}ServiceImpl implements ${className}Service {

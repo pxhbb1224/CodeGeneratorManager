@@ -54,17 +54,17 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      * @param name
      * @return
      */
-    private String getPackagePath(String name) {
+    private String getPackagePath(String name,String packageName) {
         if (TemplateCommon.entity.equals(name)) {
-            return codeGeneratorConfig.getPackagePath() + "." + TemplateCommon.entity;
+            return packageName + "." + TemplateCommon.entity;
         } else if (TemplateCommon.dao.equals(name)) {
-            return codeGeneratorConfig.getPackagePath() + "." + TemplateCommon.dao;
+            return packageName + "." + TemplateCommon.dao;
         } else if (TemplateCommon.service.equals(name)) {
-            return codeGeneratorConfig.getPackagePath() + "." + TemplateCommon.service;
+            return packageName + "." + TemplateCommon.service;
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            return codeGeneratorConfig.getPackagePath() + "." + TemplateCommon.service + "." + TemplateCommon.impl;
+            return packageName + "." + TemplateCommon.service + "." + TemplateCommon.impl;
         } else if (TemplateCommon.controller.equals(name)) {
-            return codeGeneratorConfig.getPackagePath() + "." + TemplateCommon.controller;
+            return packageName + "." + TemplateCommon.controller;
         }
         return "";
     }
@@ -185,7 +185,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.entity));
 
         Map<String, Object> map = replaceMap(table, classDescription);
-        map.put("packgePath", getPackagePath(TemplateCommon.entity));
+        map.put("packagePath", getPackagePath(TemplateCommon.entity, config.getPackageName()));
         map.put("alias", configService.getAliasName(table.getTableName(), prefix));
         map.put("table", table.getTableName());
         map.put("entityData", configService.getEntityData(table));
@@ -211,7 +211,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.dao));
 
         Map<String, Object> map = replaceMap(table, classDescription);
-        map.put("packgePath", getPackagePath(TemplateCommon.dao));
+        map.put("packagePath", getPackagePath(TemplateCommon.dao, config.getPackageName()));
 
         fileName = ReplaceUtils.replace(fileName, map);
 
@@ -235,7 +235,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.service));
 
         Map<String, Object> map = replaceMap(table, classDescription);
-        map.put("packagePath", getPackagePath(TemplateCommon.service));
+        map.put("packagePath", getPackagePath(TemplateCommon.service, config.getPackageName()));
 
         fileName = ReplaceUtils.replace(fileName, map);
 
@@ -253,15 +253,15 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
     @Override
     public void createServiceImplTemplate(Table table, Config config, String classDescription)
     {
-        String prefix = "";
+        String prefix = config.getPrefix();
         logger.info(">>>>>开始创建ServiceImpl<<<<<");
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.serviceImpl));
 
         Map<String, Object> map = replaceMap(table, classDescription);
         map.put("lowerClassName", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
-        map.put("packgePath", getPackagePath(TemplateCommon.serviceImpl));
-        map.put("daoPackgePath", getPackagePath(TemplateCommon.dao));
-        map.put("servicePackgePath", getPackagePath(TemplateCommon.service));
+        map.put("packagePath", getPackagePath(TemplateCommon.serviceImpl, config.getPackageName()));
+        map.put("daoPackagePath", getPackagePath(TemplateCommon.dao, config.getPackageName()));
+        map.put("servicePackagePath", getPackagePath(TemplateCommon.service, config.getPackageName()));
 
         fileName = ReplaceUtils.replace(fileName, map);
 
@@ -280,13 +280,13 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
     @Override
     public void createControllerTemplate(Table table, Config config, String classDescription)
     {
-        String prefix = "";
+        String prefix = config.getPrefix();
         logger.info(">>>>>开始创建controller<<<<<");
         String fileName = FileUtils.readContent(getTemplateFileName(TemplateCommon.controller));
 
         Map<String, Object> map = replaceMap(table, classDescription);
-        map.put("packgePath", getPackagePath(TemplateCommon.controller));
-        map.put("servicePackgePath", getPackagePath(TemplateCommon.service));
+        map.put("packagePath", getPackagePath(TemplateCommon.controller, config.getPackageName()));
+        map.put("servicePackagePath", getPackagePath(TemplateCommon.service, config.getPackageName()));
         map.put("lowerClassName", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
 
         fileName = ReplaceUtils.replace(fileName, map);
@@ -313,11 +313,11 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         map.put("tableName", table.getTableName());
         map.put("className", configService.getClassName(table.getTableName(), prefix));
         map.put("alias", FormatNameUtils.formatNameCamelCase(configService.getClassName(table.getTableName(), prefix), false));
-        map.put("daoPackagePath",  getPackagePath(TemplateCommon.dao));
-        //map.put("Columns", ConfigService.getMapperColumns(table));
-        //map.put("insertColumns", ConfigService.getInsertColumns(table));
-        //map.put("insertValues", ConfigService.getInsertValues(table.getTableName()));
-        //map.put("updateColumns", ConfigService.getUpdateColumns(table.getTableName()));
+        map.put("daoPackagePath",  getPackagePath(TemplateCommon.dao, config.getPackageName()));
+        map.put("Columns", configService.getMapperColumns(table, config.getPrefix()));
+        map.put("insertColumns", configService.getInsertColumns(table));
+        map.put("insertValues", configService.getInsertValues(table));
+        map.put("updateColumns", configService.getUpdateColumns(table));
 
         fileName = ReplaceUtils.replace(fileName, map);
 

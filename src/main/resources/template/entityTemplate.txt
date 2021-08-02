@@ -1,4 +1,4 @@
-package ${packgePath};
+package ${packagePath};
 
 import org.apache.ibatis.type.Alias;
 import javax.persistence.Table;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * ${classDescription}
  * @author ${author}
- * @datatime ${datatime}
+ * @datetime ${dateTime}
  */
 @Alias(value = "${alias}")
 @Table(name="${table}")

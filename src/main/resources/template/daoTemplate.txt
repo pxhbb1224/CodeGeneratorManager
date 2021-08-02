@@ -1,11 +1,11 @@
-package ${packgePath};
+package ${packagePath};
 
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * ${classDescription}
  * @author ${author}
- * @datatime ${datatime}
+ * @datetime ${dateTime}
  */
 @Mapper
 public interface ${className}Dao {

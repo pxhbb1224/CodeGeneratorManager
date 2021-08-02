@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.cmbchina.code_generator.utils.FormatNameUtils.formatToSql;
 
@@ -51,7 +53,11 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void addTable(Table table)
     {
-        userData.getTableList().add(table);
+        List<Table> temp = userData.getTableList();
+        if(temp == null)
+            temp = new ArrayList<>();
+        temp.add(table);
+        userData.setTableList(temp);
     }
 
     @Override

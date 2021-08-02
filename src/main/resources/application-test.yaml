@@ -23,7 +23,7 @@ codegenerator:
     #作者(可修改)
     author: Bin
     #生成文件的包总路径 (可修改)
-    packge-path: com.cmbchina.code_generator
+    package-path: com.cmbchina.code_generator
     #模板的总路径(不可修改)
     template-base-path: classpath:template/
     #生成文件的总路径-绝对路径(可修改)
