@@ -9,7 +9,8 @@ public interface UserDao {
 
     boolean createTable(Table table);
     boolean isTableExists(String tableName);
-    String addTable(String projectName, Table table);
-    String setConfig(String projectName, Config config);
+    boolean addTable(String projectName, Table table);
+    boolean setConfig(String projectName, Config config);
     UserData getUserData(String projectName);
+    void printDataMap();
 }

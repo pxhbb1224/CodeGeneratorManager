@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public String addTable(String projectName, Table table)
+    public boolean addTable(String projectName, Table table)
     {
         if(dataMap.getUserDataMap().containsKey(projectName))
         {
@@ -62,16 +62,17 @@ public class UserDaoImpl implements UserDao{
                 temp = new ArrayList<>();
             temp.add(table);
             userData.setTableList(temp);
-            return dataMap.addMap(userData);
+            return dataMap.setMap(projectName, userData);
         }
         else
         {
-            return "项目不存在！";
+            System.out.println("项目不存在！");
+            return false;
         }
     }
 
     @Override
-    public String setConfig(String projectName, Config config)
+    public boolean setConfig(String projectName, Config config)
     {
         if(dataMap.getUserDataMap().containsKey(projectName))
         {
@@ -99,4 +100,11 @@ public class UserDaoImpl implements UserDao{
             return new UserData();
         }
     }
+
+    @Override
+    public void printDataMap()
+    {
+        System.out.println(dataMap.getUserDataMap());
+    }
+
 }

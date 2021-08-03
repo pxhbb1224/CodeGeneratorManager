@@ -65,8 +65,24 @@ public class UserController {
             }
             String generateTime = table.getGenerateTime();
             System.out.println("生成时间" + generateTime);
-            userDao.addTable(projectName, table);
-            return Result.success(userDao.createTable(table));
+            String res = "";
+            if(userDao.addTable(projectName, table))
+            {
+                res += "项目添加表成功！";
+                if(userDao.createTable(table))
+                {
+                    res += "数据库创建表成功！";
+                }
+                else
+                {
+                    res += "数据库创建表失败！";
+                }
+            }
+            else
+            {
+                res += "项目添加表失败！";
+            }
+            return Result.success(res);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -95,15 +111,14 @@ public class UserController {
             System.out.println("项目描述" + description);
             String projectName = config.getProjectName();
             System.out.println("项目名" + projectName);
-            userDao.setConfig(projectName, config);
-            return Result.success(config);
+            return Result.success(userDao.setConfig(projectName, config)?"项目设定成功！":"项目设定失败！");
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
         }
     }
 
-    @GetMapping("/generate")
+    @PostMapping("/generate")
     public Result generateCode(@RequestBody String projectName)
     {
         try
