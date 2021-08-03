@@ -81,16 +81,16 @@ public class UserController {
             System.out.println("包名"+packageName);
             String authorName = config.getAuthorName();
             System.out.println("作者名"+authorName);
-            String moduleName = config.getModuleName();
+            /*String moduleName = config.getModuleName();
             System.out.println("模块名"+moduleName);
             String frontEndPath = config.getFrontEndPath();
             System.out.println("前端名"+frontEndPath);
             String interfaceName = config.getInterfaceName();
-            System.out.println("接口名"+interfaceName);
+            System.out.println("接口名"+interfaceName);*/
             String prefix = config.getPrefix();
             System.out.println("前缀名"+prefix);
             int needCovered = config.getNeedCovered();
-            System.out.println(needCovered == 1?"":"不" + "会覆盖");
+            System.out.println((needCovered == 1?"":"不") + "会覆盖");
             userDao.setConfig(config);
             return Result.success(config);
         } catch (Exception e) {
