@@ -53,19 +53,19 @@ public class UserController {
         }
     }
     @PostMapping("/table")
-    public Result receiveTable(@RequestBody Table table)
+    public Result receiveTable(@RequestBody Table table, String projectName)
     {
         try {
             String tableName = table.getTableName();
-            System.out.println("表名"+tableName);
+            System.out.println("表名" + tableName);
             List<Attribute> attributes = table.getProperties();
             for(Attribute a : attributes)
             {
-                System.out.println("字段"+a);
+                System.out.println("字段" + a);
             }
             String generateTime = table.getGenerateTime();
-            System.out.println("生成时间"+generateTime);
-            userDao.addTable(table);
+            System.out.println("生成时间" + generateTime);
+            userDao.addTable(projectName, table);
             return Result.success(userDao.createTable(table));
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,20 +78,24 @@ public class UserController {
     {
         try {
             String packageName = config.getPackageName();
-            System.out.println("包名"+packageName);
+            System.out.println("包名" + packageName);
             String authorName = config.getAuthorName();
-            System.out.println("作者名"+authorName);
+            System.out.println("作者名" + authorName);
             /*String moduleName = config.getModuleName();
-            System.out.println("模块名"+moduleName);
+            System.out.println("模块名" + moduleName);
             String frontEndPath = config.getFrontEndPath();
-            System.out.println("前端名"+frontEndPath);
+            System.out.println("前端名" + frontEndPath);
             String interfaceName = config.getInterfaceName();
-            System.out.println("接口名"+interfaceName);*/
+            System.out.println("接口名" + interfaceName);*/
             String prefix = config.getPrefix();
-            System.out.println("前缀名"+prefix);
+            System.out.println("前缀名" + prefix);
             int needCovered = config.getNeedCovered();
             System.out.println((needCovered == 1?"":"不") + "会覆盖");
-            userDao.setConfig(config);
+            String description = config.getDescription();
+            System.out.println("项目描述" + description);
+            String projectName = config.getProjectName();
+            System.out.println("项目名" + projectName);
+            userDao.setConfig(projectName, config);
             return Result.success(config);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,11 +104,11 @@ public class UserController {
     }
 
     @GetMapping("/generate")
-    public Result sendCode()
+    public Result generateCode(@RequestBody String projectName)
     {
         try
         {
-            return Result.success(generatorService.generateCode(userDao.getUserData()));
+            return Result.success(generatorService.generateCode(userDao.getUserData(projectName)));
         }catch(Exception e)
         {
             e.printStackTrace();

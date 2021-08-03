@@ -2,6 +2,7 @@ package com.cmbchina.code_generator.dao.impl;
 
 import com.cmbchina.code_generator.dao.UserDao;
 import com.cmbchina.code_generator.entity.Config;
+import com.cmbchina.code_generator.entity.DataMap;
 import com.cmbchina.code_generator.entity.UserData;
 import com.cmbchina.code_generator.mapper.UserMapper;
 import com.cmbchina.code_generator.entity.Table;
@@ -19,7 +20,7 @@ public class UserDaoImpl implements UserDao{
     @Autowired
     private UserMapper userMapper;
 
-    private UserData userData = new UserData();
+    private DataMap dataMap = new DataMap();
 
     @Override
     public boolean createTable(Table table) {
@@ -51,21 +52,51 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public void addTable(Table table)
+    public String addTable(String projectName, Table table)
     {
-        List<Table> temp = userData.getTableList();
-        if(temp == null)
-            temp = new ArrayList<>();
-        temp.add(table);
-        userData.setTableList(temp);
+        if(dataMap.getUserDataMap().containsKey(projectName))
+        {
+            UserData userData = dataMap.getUserDataMap().get(projectName);
+            List<Table> temp = userData.getTableList();
+            if(temp == null)
+                temp = new ArrayList<>();
+            temp.add(table);
+            userData.setTableList(temp);
+            return dataMap.addMap(userData);
+        }
+        else
+        {
+            return "项目不存在！";
+        }
     }
 
     @Override
-    public void setConfig(Config config)
+    public String setConfig(String projectName, Config config)
     {
-        userData.setConfig(config);
+        if(dataMap.getUserDataMap().containsKey(projectName))
+        {
+            UserData userData = dataMap.getUserDataMap().get(projectName);
+            userData.setConfig(config);
+            return dataMap.setMap(projectName, userData);
+        }
+        else
+        {
+            UserData userData = new UserData();
+            userData.setConfig(config);
+            return dataMap.addMap(userData);
+        }
     }
 
     @Override
-    public UserData getUserData() { return userData; }
+    public UserData getUserData(String projectName)
+    {
+        if(dataMap.getUserDataMap().containsKey(projectName))
+        {
+            return dataMap.getUserDataMap().get(projectName);
+        }
+        else
+        {
+            return new UserData();
+        }
+    }
 }

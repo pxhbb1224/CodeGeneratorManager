@@ -12,4 +12,6 @@ public class Config {
     //private String interfaceName;
     private String prefix;
     private int needCovered;
+    private String description;
+    private String projectName;
 }

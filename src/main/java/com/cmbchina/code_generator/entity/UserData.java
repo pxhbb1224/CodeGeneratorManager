@@ -10,4 +10,5 @@ public class UserData {
 
     private List<Table> tableList;
     private Config config;
+
 }

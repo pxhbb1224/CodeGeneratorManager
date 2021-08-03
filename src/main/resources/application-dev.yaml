@@ -31,7 +31,7 @@ codegenerator:
     #数据库表前缀(可修改)
     table-prefix:
     #mybatis生成的路径 (可修改)
-    mapper-path: C:\Users\lenovo\Documents\GitHub\springboot-code-generator\src\main\resources\result\
+    mapper-path: C:\Users\lenovo\Documents\GitHub\CodeGeneratorManager\src\main\resources\result\
 
 #showSql
 logging:

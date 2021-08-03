@@ -1,7 +1,5 @@
 package com.cmbchina.code_generator.entity;
 
-import java.util.List;
-import java.util.ArrayList;
 import lombok.Data;
 
 @Data
