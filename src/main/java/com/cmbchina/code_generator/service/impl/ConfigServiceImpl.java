@@ -65,6 +65,21 @@ public class ConfigServiceImpl implements ConfigService{
     }
 
     @Override
+    public String getPrimaryKeyName(Table table)
+    {
+        List<Attribute> list = table.getProperties();
+        if (list != null&&list.size() > 0) {
+            for (Attribute a : list) {
+                boolean isPK = a.getIsPrimary() == 1 ? true : false;
+                if (isPK) {
+                    return DataTypeEnum.getJavaDataTypeByMysqlDataType(a.getName());
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String getEntityData(Table table) {
         List<Attribute> list = table.getProperties();
         StringBuilder propertyString = new StringBuilder();

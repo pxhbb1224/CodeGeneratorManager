@@ -6,9 +6,7 @@ public interface ConfigService {
 
     /**
      * 别名
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月16日下午5:08:02
+     * @author Bin
      * @return
      */
     String getAliasName(String className, String prefix);
@@ -16,21 +14,24 @@ public interface ConfigService {
 
     /**
      * 类名
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月16日下午5:08:24
+     * @author Bin
      * @return
      */
     String getClassName(String tableName, String prefix);
 
     /**
-     * 主键
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月16日下午5:08:35
+     * 主键类型
+     * @author Bin
      * @return
      */
     String getPrimaryKeyDataType(Table table);
+
+    /**
+     * 主键名
+     * @author Bin
+     * @return
+     */
+    String getPrimaryKeyName(Table table);
 
     /**
      * 获取实体set方法

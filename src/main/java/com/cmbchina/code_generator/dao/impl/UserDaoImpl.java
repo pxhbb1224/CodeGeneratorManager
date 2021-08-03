@@ -17,11 +17,17 @@ import static com.cmbchina.code_generator.utils.FormatNameUtils.formatToSql;
 
 @Repository
 public class UserDaoImpl implements UserDao{
+
     @Autowired
     private UserMapper userMapper;
 
     private DataMap dataMap = new DataMap();
 
+    /**
+     * 数据库中创建表
+     * @param table
+     * @return
+     */
     @Override
     public boolean createTable(Table table) {
         try
@@ -37,6 +43,11 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 返回表是否存在
+     * @param tableName
+     * @return
+     */
     @Override
     public boolean isTableExists(String tableName)
     {
@@ -51,6 +62,12 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 往项目中添加表
+     * @param projectName
+     * @param table
+     * @return
+     */
     @Override
     public boolean addTable(String projectName, Table table)
     {
@@ -71,6 +88,12 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 新增或者修改配置
+     * @param projectName
+     * @param config
+     * @return
+     */
     @Override
     public boolean setConfig(String projectName, Config config)
     {
@@ -88,6 +111,11 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 根据项目名获取项目
+     * @param projectName
+     * @return
+     */
     @Override
     public UserData getUserData(String projectName)
     {
@@ -101,6 +129,9 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 输出所有项目信息
+     */
     @Override
     public void printDataMap()
     {

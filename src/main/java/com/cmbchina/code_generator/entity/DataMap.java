@@ -5,10 +5,18 @@ import java.util.Map;
 
 import lombok.Data;
 
+/**
+ * 存储所有项目的数据结构
+ */
 @Data
 public class DataMap {
-    private Map<String, UserData> userDataMap = new HashMap<>();
+    private Map<String, UserData> userDataMap = new HashMap<>(); //项目名唯一标识的项目数据
 
+    /**
+     * 新增项目
+     * @param userData
+     * @return
+     */
     public boolean addMap(UserData userData) {
         String name = userData.getConfig().getProjectName();
         if (!userDataMap.containsKey(name)) {
@@ -22,6 +30,12 @@ public class DataMap {
 
     }
 
+    /**
+     * 修改项目
+     * @param projectName
+     * @param userData
+     * @return
+     */
     public boolean setMap(String projectName, UserData userData)
     {
         if(userDataMap.containsKey(projectName)) {
@@ -34,6 +48,11 @@ public class DataMap {
         }
     }
 
+    /**
+     * 删除项目
+     * @param projectName
+     * @return
+     */
     public boolean deleteMap(String projectName)
     {
         if(userDataMap.containsKey(projectName))

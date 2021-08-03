@@ -12,8 +12,8 @@
         <include refid="${alias}Columns"></include>
         FROM ${tableName} ${alias}
         <where>
-            <if test="id!=null and id!=''">
-                AND ${alias}.id=#{id}
+            <if test="${primaryKey}!=null and ${primaryKey}!=''">
+                AND ${alias}.${primaryKey}=#{${primaryKey}}
             </if>
         </where>
     </select>
@@ -38,13 +38,13 @@
         </set>
         <where>
             1=1
-            AND ${alias}.id=#{id}
+            AND ${alias}.${primaryKey}=#{${primaryKey}}
         </where>
     </update>
 
     <!-- 根据ID删除 -->
     <delete id="deleteById" >
-        DELETE FROM ${tableName} WHERE id=#{id}
+        DELETE FROM ${tableName} WHERE ${primaryKey}=#{${primaryKey}}
     </delete>
 
 

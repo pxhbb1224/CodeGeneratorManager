@@ -32,17 +32,13 @@ public class UserController {
     @Autowired
     private TemplateGeneratorService generatorService;
 
-    @GetMapping("/createTable")
-    public Result createTable()
-    {
-        try {
-            Table table = new Table();
-            return Result.success(userDao.createTable(table));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail(e);
-        }
-    }
+    /**
+     * @Title:findAll
+     * @Description:返回user表中所有值
+     * @Param:
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
     @GetMapping("/findAll")
     public Result findAll() {
         try {
@@ -52,6 +48,15 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
+    /**
+     * @Title:receiveTable
+     * @Description:接收并存储表结构，建立数据库表
+     * @Param:table
+     * @Param:projectName
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
     @PostMapping("/table")
     public Result receiveTable(@RequestBody Table table, String projectName)
     {
@@ -89,6 +94,13 @@ public class UserController {
         }
     }
 
+    /**
+     * @TitlereceiveConfig
+     * @Description:接收并存储配置结构
+     * @Param:config
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
     @PostMapping("/config")
     public Result receiveConfig(@RequestBody Config config)
     {
@@ -118,12 +130,38 @@ public class UserController {
         }
     }
 
+    /**
+     * @Title:generateCode
+     * @Description:根据项目名寻找项目并根据其信息生成对应代码
+     * @Param:projectName
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
     @PostMapping("/generate")
     public Result generateCode(@RequestBody String projectName)
     {
         try
         {
             return Result.success(generatorService.generateCode(userDao.getUserData(projectName)));
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+    /**
+     * @Title:generateCode
+     * @Description:输出项目存储结构
+     * @Param:projectName
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
+    @GetMapping(value="/test")
+    public Result testMap()
+    {
+        try {
+            userDao.printDataMap();
+            return Result.success();
         }catch(Exception e)
         {
             e.printStackTrace();

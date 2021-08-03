@@ -14,7 +14,7 @@ public class ProjectData {
     public ProjectData(Config config)
     {
         name = config.getProjectName();
-        info = config.getProjectName();
+        info = config.getDescription();
         tableCount = 0;
         generateTime = DateTimeUtils.getDateTime();
     }

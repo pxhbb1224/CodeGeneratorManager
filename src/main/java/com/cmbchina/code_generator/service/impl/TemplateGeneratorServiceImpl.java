@@ -299,7 +299,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
     }
 
     /**
-     * 创建mybaits-mapper模板
+     * 创建mybatis-mapper模板
      * @author Bin
      * @param table
      * @param classDescription
@@ -317,6 +317,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         map.put("className", configService.getClassName(tableName, prefix));
         map.put("alias", FormatNameUtils.formatNameCamelCase(configService.getClassName(tableName, prefix), false));
         map.put("daoPackagePath",  getPackagePath(TemplateCommon.dao, config.getPackageName()));
+        map.put("primaryKey", configService.getPrimaryKeyName(table));
         map.put("Columns", configService.getMapperColumns(table, prefix));
         map.put("insertColumns", configService.getInsertColumns(table));
         map.put("insertValues", configService.getInsertValues(table));
@@ -330,6 +331,11 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
 
     }
 
+    /**
+    * 生成代码
+    * @author Bin
+    * @param userData
+    */
     @Override
     public boolean generateCode(UserData userData)
     {
