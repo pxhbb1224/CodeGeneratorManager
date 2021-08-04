@@ -1,10 +1,15 @@
 package com.cmbchina.code_generator.service.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import com.cmbchina.code_generator.common.TemplateCommon;
 import com.cmbchina.code_generator.config.GlobalConfig;
@@ -17,6 +22,7 @@ import com.cmbchina.code_generator.utils.DateTimeUtils;
 import com.cmbchina.code_generator.utils.FileUtils;
 import com.cmbchina.code_generator.utils.FormatNameUtils;
 import com.cmbchina.code_generator.utils.ReplaceUtils;
+import com.cmbchina.code_generator.utils.ZipUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -362,5 +368,18 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * 文件下载
+     * @param projectName 项目名
+     * @return
+     * @throws FileNotFoundException
+     */
+    @Override
+    public void downloadCode(String projectName, HttpServletResponse response) throws IOException {
+        ZipUtils.zip(codeGeneratorConfig.getWriteFileBasePath(), projectName);
+
+        new FileUtils().downloadFile(codeGeneratorConfig.getWriteFileBasePath(), projectName+".zip", response);
     }
 }

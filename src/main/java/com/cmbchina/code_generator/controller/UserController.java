@@ -1,5 +1,6 @@
 package com.cmbchina.code_generator.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cmbchina.code_generator.dao.UserDao;
 import com.cmbchina.code_generator.entity.*;
 import com.cmbchina.code_generator.model.Result;
@@ -12,6 +13,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -138,16 +143,21 @@ public class UserController {
      * @Author:Bin
      */
     @PostMapping("/generate")
-    public Result generateCode(@RequestParam(name = "name") String projectName)
-    {
-        try
-        {
-            return Result.success(generatorService.generateCode(userDao.getUserData(projectName)));
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-            return Result.fail(e);
-        }
+    public void generateCode(@RequestBody JSONObject object,
+                             HttpServletResponse response) throws IOException {
+//        if(generatorService.generateCode(userDao.getUserData(projectName)));
+        String projectName = object.getString("projectName");
+        System.out.println(projectName);
+        generatorService.downloadCode(projectName, response);
+//        }
+//        try
+//        {
+//            return Result.success();
+//        }catch(Exception e)
+//        {
+//            e.printStackTrace();
+//            return Result.fail(e);
+//        }
     }
     /**
      * @Title:generateCode
@@ -168,6 +178,7 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
     /**
      * @Title: getList
      * @Description:  获取用户列表

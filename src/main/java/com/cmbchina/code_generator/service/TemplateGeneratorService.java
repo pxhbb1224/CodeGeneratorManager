@@ -4,6 +4,12 @@ import com.cmbchina.code_generator.entity.Config;
 import com.cmbchina.code_generator.entity.Table;
 import com.cmbchina.code_generator.entity.UserData;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 public interface TemplateGeneratorService {
 
@@ -60,5 +66,17 @@ public interface TemplateGeneratorService {
      */
     void createMapperTemplate(Table table, Config config, String classDescription);
 
+    /**
+     * 生成代码
+     * @param userData
+     * @return
+     */
     boolean generateCode(UserData userData);
+
+    /**
+     * 下载代码
+     * @param projectName 项目名
+     * @return
+     */
+    void downloadCode(String projectName, HttpServletResponse response) throws IOException;
 }
