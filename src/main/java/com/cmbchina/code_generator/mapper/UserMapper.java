@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserMapper {
 
     List<User> findAll();
+    boolean dropTable(String str);
     boolean createTable(String str);
     int isTableExists(String tablename);
 }

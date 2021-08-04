@@ -86,6 +86,10 @@ public class UserController {
                 else
                 {
                     res += "数据库创建表失败！";
+                    if(userDao.deleteTable(projectName, tableName))
+                        res += "回滚删除表成功！";
+                    else
+                        res += "回滚删除表失败！";
                 }
             }
             else
@@ -136,6 +140,23 @@ public class UserController {
     }
 
     /**
+     * @Title:deleteTable
+     * @Description:根据项目名寻找项目并根据其信息生成对应代码
+     * @Param:tableName
+     * @return:com.cmbchina.code_generator.model.Result
+     * @Author:Bin
+     */
+    @PostMapping("/delete")
+    public Result deleteTable(@RequestParam(name = "name") String tableName)
+    {
+        try{
+            return Result.success(userDao.dropTable(tableName));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+    /**
      * @Title:generateCode
      * @Description:根据项目名寻找项目并根据其信息生成对应代码
      * @Param:projectName
@@ -160,9 +181,9 @@ public class UserController {
 //        }
     }
     /**
-     * @Title:generateCode
+     * @Title:testMap
      * @Description:输出项目存储结构
-     * @Param:projectName
+     * @Param:
      * @return:com.cmbchina.code_generator.model.Result
      * @Author:Bin
      */

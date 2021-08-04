@@ -10,4 +10,7 @@
     <select id="isTableExists" parameterType="String" resultType="Integer">
         select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME`= #{str}
     </select>
+    <update id="dropTable" parameterType="String">
+        ${str}
+    </update>
 </mapper>

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cmbchina.code_generator.utils.FormatNameUtils.formatToSql;
+import com.cmbchina.code_generator.utils.FormatNameUtils;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao{
     public boolean createTable(Table table) {
         try
         {
-            String str = formatToSql(table);
+            String str = FormatNameUtils.formatToCreateSql(table);
             userMapper.createTable(str);
             return isTableExists(table.getTableName());
         }
@@ -79,7 +79,7 @@ public class UserDaoImpl implements UserDao{
                 temp = new ArrayList<>();
             for(int i = 0; i < temp.size(); i++)
             {
-                if(temp.get(i).getTableName() == table.getTableName())
+                if(temp.get(i).getTableName().equals(table.getTableName()))
                 {
                     System.out.println("数据库表已存在！");
                     return false;
@@ -96,6 +96,70 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 删除对应项目结构中的表,tableName为空时删除项目
+     * @param projectName
+     * @return
+     */
+    @Override
+    public boolean deleteTable(String projectName, String tableName)
+    {
+        if(tableName == null || tableName.length() == 0)
+            return dataMap.deleteMap(projectName);
+        else if(dataMap.getUserDataMap().containsKey(projectName))
+        {
+            UserData userData = dataMap.getUserDataMap().get(projectName);
+            List<Table> temp = userData.getTableList();
+            if(temp == null)
+                temp = new ArrayList<>();
+            boolean isFound = false;
+            for(int i = 0; i < temp.size(); i++)
+            {
+                if(temp.get(i).getTableName().equals(tableName))
+                {
+                    temp.remove(i);
+                    isFound = true;
+                    System.out.println("项目 " + projectName + "表 " + tableName + "删除成功！");
+                    break;
+                }
+            }
+            if(isFound)
+            {
+                userData.setTableList(temp);
+                return dataMap.setMap(projectName, userData);
+            }
+            else
+            {
+                System.out.println("表不存在！");
+                return false;
+            }
+        }
+        else
+        {
+            System.out.println("项目不存在！");
+            return false;
+        }
+    }
+
+    /**
+     * 数据库中s删除表
+     * @param tableName
+     * @return
+     */
+    @Override
+    public boolean dropTable(String tableName) {
+        try
+        {
+            String str = FormatNameUtils.formatToDropSql(tableName);
+            userMapper.dropTable(str);
+            return !isTableExists(tableName);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
     /**
      * 新增或者修改配置
      * @param projectName

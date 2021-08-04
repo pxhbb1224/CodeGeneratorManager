@@ -24,11 +24,13 @@ public class FormatNameUtils {
         int index = 0;
         if(!capitalized)
         {
-            columnName += arr[0].substring(0, 1).toLowerCase() + arr[0].substring(1);
+            if(arr[0].length() > 0)
+                columnName += arr[0].substring(0, 1).toLowerCase() + arr[0].substring(1);
             index++;
         }
         for (; index < arr.length; index++) {
-            columnName += arr[index].substring(0, 1).toUpperCase() + arr[index].substring(1);
+            if(arr[0].length() > 0)
+                columnName += arr[index].substring(0, 1).toUpperCase() + arr[index].substring(1);
         }
         return columnName;
     }
@@ -39,7 +41,7 @@ public class FormatNameUtils {
      * @return String
      * @author Bin
      */
-    public static String formatToSql(Table table)
+    public static String formatToCreateSql(Table table)
     {
         String res = "create table ";
         List<String> foreignList = new ArrayList<>();
@@ -77,6 +79,21 @@ public class FormatNameUtils {
                     + " foreign key" + "(" + temp[0] + ")" + " references" + " " + temp[1] + ",";
         }
         res  = res.substring(0, res.length() - 1) + ")";
+        return res;
+    }
+
+    /**
+     * 将数据库表结构转化为删除语句
+     * @param tableName
+     * @return String
+     * @author Bin
+     */
+    public static String formatToDropSql(String tableName) {
+        String res = "";
+        if (tableName != null && tableName.trim().length() > 0) {
+            res += "drop table if exists" + " " + tableName;
+
+        }
         return res;
     }
 }

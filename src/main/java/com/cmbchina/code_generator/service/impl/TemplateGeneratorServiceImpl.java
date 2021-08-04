@@ -106,17 +106,17 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      */
     private String getWriteFilePath(String name, String projectName, String tableName) {
         if (TemplateCommon.entity.equals(name)) {
-            return  projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.entity;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.entity;
         } else if (TemplateCommon.dao.equals(name)) {
-            return projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.dao;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.dao;
         } else if (TemplateCommon.service.equals(name)) {
-            return projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.service;
+            return codeGeneratorConfig.getWriteFileBasePath()  + projectName + "\\" + tableName + "\\" + TemplateCommon.service;
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            return projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.service + "\\" + TemplateCommon.impl;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.service + "\\" + TemplateCommon.impl;
         } else if (TemplateCommon.controller.equals(name)) {
-            return projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.controller;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\"  + TemplateCommon.controller;
         }else if (TemplateCommon.mapper.equals(name)) {
-            return projectName + "\\" + tableName + "\\" + codeGeneratorConfig.getMapperPath() + TemplateCommon.mapper;
+            return codeGeneratorConfig.getMapperPath() + projectName + "\\" + tableName + "\\" + TemplateCommon.mapper;
         }
         return "";
     }
