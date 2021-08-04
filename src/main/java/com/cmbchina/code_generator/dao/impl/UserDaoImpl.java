@@ -77,6 +77,14 @@ public class UserDaoImpl implements UserDao{
             List<Table> temp = userData.getTableList();
             if(temp == null)
                 temp = new ArrayList<>();
+            for(int i = 0; i < temp.size(); i++)
+            {
+                if(temp.get(i).getTableName() == table.getTableName())
+                {
+                    System.out.println("数据库表已存在！");
+                    return false;
+                }
+            }
             temp.add(table);
             userData.setTableList(temp);
             return dataMap.setMap(projectName, userData);

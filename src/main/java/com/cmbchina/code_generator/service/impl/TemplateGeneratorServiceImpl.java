@@ -98,7 +98,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      * @param name
      * @return
      */
-    private String getWriteFilePath(String name) {
+    private String getWriteFilePath(String name, String projectName, String tableName) {
         if (TemplateCommon.entity.equals(name)) {
             return codeGeneratorConfig.getWriteFileBasePath() + TemplateCommon.entity;
         } else if (TemplateCommon.dao.equals(name)) {
@@ -119,6 +119,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      * 获取生成文件名+后缀
      * @author Bin
      * @param name
+     * @param prefix
      * @param tableName
      * @return
      */
@@ -143,27 +144,28 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      * 生成文件
      * @author Bin
      * @param name
+     * @param prefix
      * @param tableName
      * @param fileName
      */
-    private void fileWrite(String name, String prefix, String tableName, String fileName) {
+    private void fileWrite(String name, String prefix, String tableName, String fileName, String projectName) {
         if (TemplateCommon.entity.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.entity),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.entity, projectName, tableName),
                     getWriteFileName(TemplateCommon.entity, prefix, tableName), fileName);
         } else if (TemplateCommon.dao.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.dao),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.dao, projectName, tableName),
                     getWriteFileName(TemplateCommon.dao, prefix, tableName), fileName);
         } else if (TemplateCommon.service.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.service),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.service, projectName, tableName),
                     getWriteFileName(TemplateCommon.service, prefix, tableName), fileName);
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.serviceImpl),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.serviceImpl, projectName, tableName),
                     getWriteFileName(TemplateCommon.serviceImpl, prefix, tableName), fileName);
         } else if (TemplateCommon.controller.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.controller),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.controller, projectName, tableName),
                     getWriteFileName(TemplateCommon.controller, prefix, tableName), fileName);
         }else if (TemplateCommon.mapper.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.mapper),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.mapper, projectName, tableName),
                     getWriteFileName(TemplateCommon.mapper, prefix, tableName), fileName);
         }
 
@@ -193,7 +195,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建实体文本:\n" + fileName);
-        fileWrite(TemplateCommon.entity, prefix, tableName, fileName);
+        fileWrite(TemplateCommon.entity, prefix, tableName, fileName, config.getProjectName());
         logger.info(">>>>>结束创建实体<<<<<");
     }
 
@@ -216,7 +218,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建DAO文本:\n" + fileName);
-        fileWrite(TemplateCommon.dao, config.getPrefix(), table.getTableName(), fileName);
+        fileWrite(TemplateCommon.dao, config.getPrefix(), table.getTableName(), fileName, config.getProjectName());
         logger.info(">>>>>结束创建DAO<<<<<");
 
     }
@@ -240,7 +242,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建Service文本:\n" + fileName);
-        fileWrite(TemplateCommon.service, config.getPrefix(), table.getTableName(), fileName);
+        fileWrite(TemplateCommon.service, config.getPrefix(), table.getTableName(), fileName, config.getProjectName());
         logger.info(">>>>>结束创建Service<<<<<");
     }
 
@@ -267,7 +269,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建ServiceImpl文本:\n" + fileName);
-        fileWrite(TemplateCommon.serviceImpl, prefix, tableName, fileName);
+        fileWrite(TemplateCommon.serviceImpl, prefix, tableName, fileName, config.getProjectName());
         logger.info(">>>>>结束创建ServiceImpl<<<<<");
 
     }
@@ -294,7 +296,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建控制器文本:\n" + fileName);
-        fileWrite(TemplateCommon.controller, prefix, tableName, fileName);
+        fileWrite(TemplateCommon.controller, prefix, tableName, fileName, config.getProjectName());
         logger.info(">>>>>结束创建controller<<<<<");
     }
 
@@ -326,7 +328,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         fileName = ReplaceUtils.replace(fileName, map);
 
         logger.info("创建mybatis文本:\n:" + fileName);
-        fileWrite(TemplateCommon.mapper, prefix, tableName, fileName);
+        fileWrite(TemplateCommon.mapper, prefix, tableName, fileName, config.getProjectName());
         logger.info(">>>>>结束创建Mapper<<<<<");
 
     }

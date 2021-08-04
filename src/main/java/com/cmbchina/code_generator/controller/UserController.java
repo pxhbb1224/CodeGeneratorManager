@@ -138,7 +138,7 @@ public class UserController {
      * @Author:Bin
      */
     @PostMapping("/generate")
-    public Result generateCode(@RequestBody String projectName)
+    public Result generateCode(@RequestParam(name = "name") String projectName)
     {
         try
         {

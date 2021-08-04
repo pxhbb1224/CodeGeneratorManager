@@ -35,9 +35,7 @@ public interface ConfigService {
 
     /**
      * 获取实体set方法
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月17日上午10:06:35
+     * @author Bin
      * @param ColumnName
      * @param dataType
      * @return
@@ -46,9 +44,7 @@ public interface ConfigService {
 
     /**
      * 获取实体get方法
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月17日上午10:07:32
+     * @author Bin
      * @param ColumnName
      * @param dataType
      * @return
@@ -57,9 +53,7 @@ public interface ConfigService {
 
     /**
      * 创建属性
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月17日上午11:01:54
+     * @author Bin
      * @param ColumnName
      * @param dataType
      * @return
@@ -68,9 +62,7 @@ public interface ConfigService {
 
     /**
      * 获取实体数据
-     *
-     * @author JohnDeng
-     * @datatime 2019年1月17日上午11:13:13
+     * @author Bin
      * @param table
      * @return
      */
@@ -78,13 +70,12 @@ public interface ConfigService {
 
     /**
      * 获取属性注释
-     * @author JohnDeng
-     * @datatime 2019年1月21日下午5:42:56
+     * @author Bin
      * @return
      */
     String  getPropertyComments(String comments);
 
-    String getMapperColumns( Table table, String prefix);
+    String getMapperColumns(Table table, String prefix);
 
     String getInsertColumns(Table table);
 
