@@ -1,11 +1,8 @@
 package com.cmbchina.code_generator.dao.impl;
 
 import com.cmbchina.code_generator.dao.UserDao;
-import com.cmbchina.code_generator.entity.Config;
-import com.cmbchina.code_generator.entity.DataMap;
-import com.cmbchina.code_generator.entity.UserData;
+import com.cmbchina.code_generator.entity.*;
 import com.cmbchina.code_generator.mapper.UserMapper;
-import com.cmbchina.code_generator.entity.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -184,6 +181,14 @@ public class UserDaoImpl implements UserDao{
                 }
 
             }
+            if(userMapper.dropProject(projectName))
+            {
+                System.out.println("删除数据库中项目项" + projectName + "成功！");
+            }
+            else
+            {
+                System.out.println("删除数据库中项目项" + projectName + "失败！");
+            }
             if(deleteTable(projectName, null))
             {
                 System.out.println("删除项目" + projectName + "成功！");
@@ -242,6 +247,95 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 获取表信息
+     * @param tableName
+     * @return
+     */
+    @Override
+    public List<TableColumns> getInfo(String tableName)
+    {
+        return userMapper.getInfo(tableName);
+    }
+
+    /**
+     * 获取配置表信息
+     * @return
+     */
+    @Override
+    public List<Config> getConfig()
+    {
+        return userMapper.getConfig();
+    }
+
+    /**
+     * 获取项目对应表的列表
+     * @param projectName
+     * @return
+     */
+    @Override
+    public List<String> getTable(String projectName)
+    {
+        return userMapper.getTable(projectName);
+    }
+
+    /**
+     * 将数据库中的项目同步到项目结构中
+     */
+    @Override
+    public void updateData()
+    {
+        List<Config> configList = getConfig();
+        for(Config config : configList)
+        {
+            String projectName = config.getProjectName();
+            setConfig(projectName, config);
+            List<String> tableList = getTable(projectName);
+            for(String tableName : tableList)
+            {
+                addTable(projectName, formatToTable(getInfo(tableName)));
+            }
+        }
+        return;
+    }
+    @Override
+    public Table formatToTable(List<TableColumns> tableColumnsList)
+    {
+        List<Attribute> attributeList = new ArrayList<>();
+        Table t = new Table();
+        t.setTableName(tableColumnsList.get(0).getTableName());
+        t.setComment(tableColumnsList.get(0).getTableComment());
+        for(TableColumns column : tableColumnsList)
+        {
+            Attribute a = new Attribute();
+            a.setName(column.getColumnName());
+            a.setType(column.getDataType());
+            if(!column.getColumnType().equals(column.getDataType()))
+                if(column.getCharacterMaximumLength() != null)
+                    a.setLength(Integer.parseInt(column.getCharacterMaximumLength()));
+                else
+                {
+                    if(column.getNumericPrecision() != null)
+                        a.setLength(Integer.parseInt(column.getNumericPrecision()));
+                    if(column.getNumericScale() != null)
+                        a.setPrecision(Integer.parseInt(column.getNumericScale()));
+                }
+            if(column.getIsNullable().equals("NO"))
+                a.setIsNotNull(1);
+            if(column.getColumnKey().equals("PRI"))
+            {
+                a.setIsPrimary(1);
+            }
+            else if(column.getColumnKey().equals("UNI"))
+            {
+                a.setIsUnique(1);
+            }
+            a.setComment(column.getColumnComment());
+            attributeList.add(a);
+        }
+        t.setProperties(attributeList);
+        return t;
+    }
     /**
      * 输出所有项目信息
      */

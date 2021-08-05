@@ -53,7 +53,36 @@ public class UserController {
             return Result.fail(e);
         }
     }
+    @GetMapping("/updateData")
+    public Result updateData() {
+        try {
+            userDao.updateData();
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
 
+    @GetMapping("/getConfig")
+    public Result getConfig() {
+        try {
+            return Result.success(userDao.getConfig());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+    @PostMapping("/getInfo")
+    public Result getInfo(@RequestBody JSONObject object) {
+        try {
+            String tableName = object.getString("tableName");
+            return Result.success(userDao.getInfo(tableName));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
     /**
      * @Title:receiveTable
      * @Description:接收并存储表结构，建立数据库表
@@ -73,8 +102,8 @@ public class UserController {
             {
                 System.out.println("字段" + a);
             }
-            String generateTime = table.getGenerateTime();
-            System.out.println("生成时间" + generateTime);
+            String comment = table.getComment();
+            System.out.println("注释" + comment);
             String res = "";
             if(userDao.addTable(projectName, table))
             {
