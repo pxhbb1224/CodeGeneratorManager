@@ -29,7 +29,7 @@ public class FormatNameUtils {
             index++;
         }
         for (; index < arr.length; index++) {
-            if(arr[0].length() > 0)
+            if(arr[index].length() > 0)
                 columnName += arr[index].substring(0, 1).toUpperCase() + arr[index].substring(1);
         }
         return columnName;
