@@ -104,7 +104,7 @@ public class UserController {
     }
 
     /**
-     * @TitlereceiveConfig
+     * @Title:receiveConfig
      * @Description:接收并存储配置结构
      * @Param:config
      * @return:com.cmbchina.code_generator.model.Result
@@ -141,17 +141,54 @@ public class UserController {
 
     /**
      * @Title:deleteTable
-     * @Description:根据项目名寻找项目并根据其信息生成对应代码
+     * @Description:根据项目名寻找项目并删除对应表
      * @Param:tableName
      * @return:com.cmbchina.code_generator.model.Result
      * @Author:Bin
      */
-    @PostMapping("/delete")
-    public Result deleteTable(@RequestParam(name = "name") String tableName)
+    @PostMapping("/deleteTable")
+    public Result deleteTable(@RequestBody JSONObject object)
     {
         try{
-            return Result.success(userDao.dropTable(tableName));
+            String projectName = object.getString("projectName");
+            String tableName = object.getString("tableName");
+            String res = "";
+            if(userDao.deleteTable(projectName, tableName))
+            {
+                res += "项目删除表成功！";
+                if(userDao.dropTable(tableName))
+                {
+                    res += "数据库删除表成功！";
+                }
+                else
+                {
+                    res += "数据库删除表失败！";
+                }
+            }
+            else
+            {
+                res += "项目删除表失败！";
+            }
+            return Result.success(res);
         } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
+    /**
+     * 删除项目结构及其相关表
+     * @param:object
+     * @return
+     */
+    @PostMapping(value="deleteProject")
+    public Result deleteProject(@RequestBody JSONObject object)
+    {
+        try {
+            String projectName = object.getString("projectName");
+            return Result.success(userDao.deleteProject(projectName));
+        } catch (Exception e)
+        {
             e.printStackTrace();
             return Result.fail(e);
         }

@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     /**
-     * 数据库中s删除表
+     * 数据库中删除表
      * @param tableName
      * @return
      */
@@ -160,8 +160,49 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+
     /**
-     * 新增或者修改配置
+     * 删除项目结构及其关联数据库表
+     * @param projectName
+     * @return
+     */
+    @Override
+    public boolean deleteProject(String projectName)
+    {
+        if(dataMap.getUserDataMap().containsKey(projectName))
+        {
+            UserData userData = dataMap.getUserDataMap().get(projectName);
+            for(Table t : userData.getTableList())
+            {
+                if(dropTable(t.getTableName()))
+                {
+                    System.out.println("删除数据库表" + t.getTableName() + "成功！");
+                }
+                else
+                {
+                    System.out.println("删除数据库表" + t.getTableName() + "失败！");
+                }
+
+            }
+            if(deleteTable(projectName, null))
+            {
+                System.out.println("删除项目" + projectName + "成功！");
+                return true;
+            }
+            else
+            {
+                System.out.println("删除项目" + projectName + "失败！");
+                return false;
+            }
+        }
+        else
+        {
+            System.out.println("待删除项目不存在！");
+            return false;
+        }
+    }
+    /**
+     * 新增或者修改配置，可用于新建项目
      * @param projectName
      * @param config
      * @return
