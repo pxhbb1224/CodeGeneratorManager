@@ -59,6 +59,9 @@
     <select id="isExistsInTable" parameterType="String" resultType="Integer">
         select COUNT(*) from table_info where table_name = #{tableName}
     </select>
+    <select id="isExistsInProject" parameterType="String" resultType="Integer">
+        select COUNT(*) from project where table_name = #{tableName}
+    </select>
     <select id="isProjectExists" parameterType="String" resultType="Integer">
         select COUNT(*) from project where project_name = #{projectName}
     </select>
@@ -68,6 +71,9 @@
     <insert id="addProject">
         insert into project(project_name, table_name) values(#{projectName}, #{tableName})
     </insert>
+    <update id="deleteProject" parameterType="String">
+        delete from project where table_name = #{tableName}
+    </update>
     <update id="dropProject" parameterType="String">
         delete from project where project_name = #{projectName}
     </update>

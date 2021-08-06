@@ -21,8 +21,10 @@ public interface UserMapper {
     void setConfig(Config config);
     int isConfigExists(String projectName);
     void addProject(@Param("projectName") String projectName, @Param("tableName") String tableName);
+    void deleteProject(String tableName);
     void dropProject(String projectName);
     int isProjectExists(String projectName);
+    int isExistsInProject(String tableName);
     void dropTable(String str);
     void deleteTable(String tableName);
     void insertTable(@Param("tableName") String tableName, @Param("generateTime") String generateTime);

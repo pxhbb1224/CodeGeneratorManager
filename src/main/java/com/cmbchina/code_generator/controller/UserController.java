@@ -107,10 +107,18 @@ public class UserController {
             String res = "";
             if(userDao.addTable(projectName, table))
             {
-                res += "项目添加表成功！";
+                res += "项目结构添加表成功！";
                 if(userDao.createTable(table))
                 {
                     res += "数据库创建表成功！";
+                    if(userDao.insertProject(projectName, tableName))
+                    {
+                        res += "项目表记录添加成功！";
+                    }
+                    else
+                    {
+                        res += "项目表记录添加失败！";
+                    }
                 }
                 else
                 {
@@ -126,7 +134,7 @@ public class UserController {
             }
             else
             {
-                res += "项目添加表失败！";
+                res += "项目结构添加表失败！";
             }
             return Result.success(res);
         } catch (Exception e) {
@@ -190,11 +198,11 @@ public class UserController {
                 res += "项目删除表成功！";
                 if(userDao.dropTable(tableName))
                 {
-                    res += "数据库删除表成功！";
+                    res += "数据库删除表相关项成功！";
                 }
                 else
                 {
-                    res += "数据库删除表失败！";
+                    res += "数据库删除表相关项失败！";
                 }
             }
             else

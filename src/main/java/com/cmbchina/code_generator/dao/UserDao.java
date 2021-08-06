@@ -17,9 +17,11 @@ public interface UserDao {
     boolean addTable(String projectName, Table table);
     boolean deleteTable(String projectName, String tableName);
     boolean dropTable(String tableName);
+    boolean insertProject(String projectName, String tableName);
     boolean deleteProject(String projectName);
     boolean dropProject(String projectName);
     boolean setConfig(String projectName, Config config);
+    boolean insertConfig(String projectName, Config config);
     boolean dropConfig(String projectName);
     UserData getUserData(String projectName);
     List<TableColumns> getInfo(String tableName);
