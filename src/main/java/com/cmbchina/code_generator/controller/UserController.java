@@ -92,9 +92,10 @@ public class UserController {
      * @Author:Bin
      */
     @PostMapping("/table")
-    public Result receiveTable(@RequestBody Table table, String projectName)
+    public Result receiveTable(@RequestBody Table table, @RequestParam(value = "projectName")String projectName)
     {
         try {
+            System.out.println("项目名" + projectName);
             String tableName = table.getTableName();
             System.out.println("表名" + tableName);
             List<Attribute> attributes = table.getProperties();
@@ -243,11 +244,10 @@ public class UserController {
     @PostMapping("/generate")
     public void generateCode(@RequestBody JSONObject object,
                              HttpServletResponse response) throws IOException {
-//        if(generatorService.generateCode(userDao.getUserData(projectName)));
         String projectName = object.getString("projectName");
+        if(generatorService.generateCode(userDao.getUserData(projectName)));
         System.out.println(projectName);
         generatorService.downloadCode(projectName, response);
-//        }
 //        try
 //        {
 //            return Result.success();

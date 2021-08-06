@@ -379,7 +379,6 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
     @Override
     public void downloadCode(String projectName, HttpServletResponse response) throws IOException {
         ZipUtils.zip(codeGeneratorConfig.getWriteFileBasePath(), projectName);
-
         new FileUtils().downloadFile(codeGeneratorConfig.getWriteFileBasePath(), projectName+".zip", response);
     }
 }
