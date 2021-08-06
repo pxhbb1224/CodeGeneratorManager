@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     /**
-     * 返回表是否存在
+     * 返回表是否存在(同时检查数据库中和table_info中的记录)
      * @param tableName
      * @return
      */
@@ -60,6 +60,7 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+
     /**
      * 返回项目是否存在
      * @param projectName
@@ -97,6 +98,7 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+
     /**
      * 往项目结构中添加表
      * @param projectName
@@ -177,7 +179,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     /**
-     * 数据库中删除表
+     * 数据库中删除表，同时删除table_info和project表中记录
      * @param tableName
      * @return
      */
@@ -269,6 +271,11 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 删除project表中对应项目
+     * @param projectName
+     * @return
+     */
     @Override
     public boolean dropProject(String projectName)
     {
@@ -310,6 +317,12 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     *在config表中插入或修改配置
+     * @param projectName
+     * @param config
+     * @return
+     */
     @Override
     public boolean insertConfig(String projectName, Config config)
     {
@@ -417,6 +430,12 @@ public class UserDaoImpl implements UserDao{
         }
         return;
     }
+
+    /**
+     * 将表的字段属性转化为table结构
+     * @param tableColumnsList
+     * @return
+     */
     @Override
     public Table formatToTable(List<TableColumns> tableColumnsList)
     {
