@@ -12,15 +12,20 @@ public interface UserDao {
 
     boolean createTable(Table table);
     boolean isTableExists(String tableName);
+    boolean isProjectExists(String projectName);
+    boolean isConfigExists(String projectName);
     boolean addTable(String projectName, Table table);
     boolean deleteTable(String projectName, String tableName);
     boolean dropTable(String tableName);
     boolean deleteProject(String projectName);
+    boolean dropProject(String projectName);
     boolean setConfig(String projectName, Config config);
+    boolean dropConfig(String projectName);
     UserData getUserData(String projectName);
     List<TableColumns> getInfo(String tableName);
     List<Config> getConfig();
     List<String> getTable(String projectName);
+    String getTime(String tableName);
     void updateData();
     Table formatToTable(List<TableColumns> tableColumnsList);
     void printDataMap();

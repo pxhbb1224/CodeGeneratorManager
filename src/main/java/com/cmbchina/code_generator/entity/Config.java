@@ -2,6 +2,7 @@ package com.cmbchina.code_generator.entity;
 
 import lombok.Data;
 
+
 /**
  * 存储一个项目的配置信息
  */
@@ -17,4 +18,5 @@ public class Config {
     private int needCovered; //是否覆盖
     private String description; //项目描述
     private String projectName; //项目名
+    String generateTime;//生成时间
 }

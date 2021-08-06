@@ -67,4 +67,12 @@ public class DataMap {
             return false;
         }
     }
+
+    /**
+     * 清除map内容
+     */
+    public void clearMap()
+    {
+        userDataMap.clear();
+    }
 }

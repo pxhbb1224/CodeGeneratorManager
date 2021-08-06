@@ -35,17 +35,35 @@
     <select id="getTable" parameterType="String" resultType="String">
         SELECT table_name FROM project where project.project_name = #{projectName}
     </select>
+    <select id="getTime" resultType="String">
+        SELECT generate_time FROM table_info where table_name = #{tableName}
+    </select>
     <select id="findAll" resultType="com.cmbchina.code_generator.entity.User">
         SELECT * FROM tb_user
     </select>
     <update id="createTable" parameterType="String">
         ${str}
     </update>
+    <update id="dropTable" parameterType="String">
+        ${str}
+    </update>
+    <insert id="insertTable">
+        insert into table_info(table_name, generate_time) values(#{tableName}, #{generateTime})
+    </insert>
+    <update id="deleteTable" parameterType="String">
+        delete from table_info where table_name = #{tableName}
+    </update>
     <select id="isTableExists" parameterType="String" resultType="Integer">
-        select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME`= #{str}
+        select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME`= #{tableName}
+    </select>
+    <select id="isExistsInTable" parameterType="String" resultType="Integer">
+        select COUNT(*) from table_info where table_name = #{tableName}
     </select>
     <select id="isProjectExists" parameterType="String" resultType="Integer">
         select COUNT(*) from project where project_name = #{projectName}
+    </select>
+    <select id="isConfigExists" parameterType="String" resultType="Integer">
+        select COUNT(*) from config where project_name = #{projectName}
     </select>
     <insert id="addProject">
         insert into project(project_name, table_name) values(#{projectName}, #{tableName})
@@ -53,7 +71,12 @@
     <update id="dropProject" parameterType="String">
         delete from project where project_name = #{projectName}
     </update>
-    <update id="dropTable" parameterType="String">
-        ${str}
+    <insert id="setConfig" parameterType="com.cmbchina.code_generator.entity.Config">
+        replace into config(package_name, author_name, prefix, need_covered, description, project_name, generate_time)
+        values(#{projectName}, #{authorName}, #{prefix}, ${needCovered},
+               #{description}, #{projectName}, #{generateTime})
+    </insert>
+    <update id="dropConfig" parameterType="String">
+        delete from config where project_name = #{projectName}
     </update>
 </mapper>

@@ -31,6 +31,7 @@ public class UserDaoImpl implements UserDao{
         {
             String str = FormatNameUtils.formatToCreateSql(table);
             userMapper.createTable(str);
+            userMapper.insertTable(table.getTableName(), table.getGenerateTime());
             return isTableExists(table.getTableName());
         }
         catch(Exception e)
@@ -50,7 +51,26 @@ public class UserDaoImpl implements UserDao{
     {
         try
         {
-            return (userMapper.isTableExists(tableName) == 0 ? false : true);
+            return (userMapper.isTableExists(tableName) +
+                    userMapper.isExistsInTable(tableName) == 2 ? true : false);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 返回项目是否存在
+     * @param projectName
+     * @return
+     */
+    @Override
+    public boolean isProjectExists(String projectName)
+    {
+        try
+        {
+            return (userMapper.isProjectExists(projectName) == 0 ? false : true);
         }
         catch(Exception e)
         {
@@ -59,6 +79,24 @@ public class UserDaoImpl implements UserDao{
         }
     }
 
+    /**
+     * 返回配置是否存在
+     * @param projectName
+     * @return
+     */
+    @Override
+    public boolean isConfigExists(String projectName)
+    {
+        try
+        {
+            return (userMapper.isConfigExists(projectName) == 0 ? false : true);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
     /**
      * 往项目中添加表
      * @param projectName
@@ -149,6 +187,7 @@ public class UserDaoImpl implements UserDao{
         {
             String str = FormatNameUtils.formatToDropSql(tableName);
             userMapper.dropTable(str);
+            userMapper.deleteTable(tableName);
             return !isTableExists(tableName);
         }
         catch(Exception e)
@@ -171,7 +210,7 @@ public class UserDaoImpl implements UserDao{
             UserData userData = dataMap.getUserDataMap().get(projectName);
             for(Table t : userData.getTableList())
             {
-                if(dropTable(t.getTableName()))
+                if(dropTable(t.getTableName()))//删除数据库中表以及table表中的记录
                 {
                     System.out.println("删除数据库表" + t.getTableName() + "成功！");
                 }
@@ -181,15 +220,17 @@ public class UserDaoImpl implements UserDao{
                 }
 
             }
-            if(userMapper.dropProject(projectName))
+
+            //删除配置表中的记录             删除项目表中的记录
+            if(dropConfig(projectName) && dropProject(projectName))
             {
-                System.out.println("删除数据库中项目项" + projectName + "成功！");
+                System.out.println("删除数据库中项目相关项" + projectName + "成功！");
             }
             else
             {
-                System.out.println("删除数据库中项目项" + projectName + "失败！");
+                System.out.println("删除数据库中项目相关项" + projectName + "失败！");
             }
-            if(deleteTable(projectName, null))
+            if(deleteTable(projectName, null))//删除表的项目结构
             {
                 System.out.println("删除项目" + projectName + "成功！");
                 return true;
@@ -206,6 +247,19 @@ public class UserDaoImpl implements UserDao{
             return false;
         }
     }
+
+    @Override
+    public boolean dropProject(String projectName)
+    {
+        try{
+            userMapper.dropProject(projectName);
+            return !isProjectExists(projectName);
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
     /**
      * 新增或者修改配置，可用于新建项目
      * @param projectName
@@ -219,6 +273,7 @@ public class UserDaoImpl implements UserDao{
         {
             UserData userData = dataMap.getUserDataMap().get(projectName);
             userData.setConfig(config);
+            userMapper.setConfig(config);//将config数据插入config表中
             return dataMap.setMap(projectName, userData);
         }
         else
@@ -226,6 +281,21 @@ public class UserDaoImpl implements UserDao{
             UserData userData = new UserData();
             userData.setConfig(config);
             return dataMap.addMap(userData);
+        }
+    }
+
+    @Override
+    public boolean dropConfig(String projectName)
+    {
+        try
+        {
+            userMapper.dropConfig(projectName);
+            return !isConfigExists(projectName);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -279,12 +349,18 @@ public class UserDaoImpl implements UserDao{
         return userMapper.getTable(projectName);
     }
 
+    @Override
+    public String getTime(String tableName)
+    {
+        return userMapper.getTime(tableName);
+    }
     /**
      * 将数据库中的项目同步到项目结构中
      */
     @Override
     public void updateData()
     {
+        dataMap.clearMap();
         List<Config> configList = getConfig();
         for(Config config : configList)
         {
@@ -303,8 +379,11 @@ public class UserDaoImpl implements UserDao{
     {
         List<Attribute> attributeList = new ArrayList<>();
         Table t = new Table();
+        if(tableColumnsList.size() == 0)
+            return t;
         t.setTableName(tableColumnsList.get(0).getTableName());
         t.setComment(tableColumnsList.get(0).getTableComment());
+        t.setGenerateTime(getTime(tableColumnsList.get(0).getTableName()));
         for(TableColumns column : tableColumnsList)
         {
             Attribute a = new Attribute();

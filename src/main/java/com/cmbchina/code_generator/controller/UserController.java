@@ -118,10 +118,6 @@ public class UserController {
                     if(userDao.deleteTable(projectName, tableName))
                     {
                         res += "回滚删除表成功！";
-                        if(userDao.dropTable(tableName))
-                            res += "清除数据库重名表成功！";
-                        else
-                            res += "清除数据库重名表失败！";
                     }
 
                     else
