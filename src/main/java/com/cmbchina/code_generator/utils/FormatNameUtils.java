@@ -67,7 +67,7 @@ public class FormatNameUtils {
                 if(a.getIsNotNull() == 1)
                     res += " " + "not null";
             }
-            if(a.getComment().length() > 0)
+            if(a.getComment() != null && a.getComment().trim().length() > 0)
                 res += " " + "comment" + " '" + a.getComment() + "'";
             res += ",";
             /*if(a.getForeignKey().length() > 0)
@@ -80,7 +80,7 @@ public class FormatNameUtils {
                     + " foreign key" + "(" + temp[0] + ")" + " references" + " " + temp[1] + ",";
         }
         res  = res.substring(0, res.length() - 1) + ")";
-        if(table.getComment().length() > 0)
+        if(table.getComment() != null && table.getComment().trim().length() > 0)
             res += "comment = " + "'" + table.getComment() + "'";
         return res;
     }

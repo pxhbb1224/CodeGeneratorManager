@@ -424,6 +424,8 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void updateData()
     {
+        if(dataMap.getUserDataMap().size() > 0)
+            return;
         dataMap.clearMap();
         List<Config> configList = getConfig();
         for(Config config : configList)

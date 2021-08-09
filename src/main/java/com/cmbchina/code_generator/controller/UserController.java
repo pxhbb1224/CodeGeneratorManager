@@ -110,6 +110,7 @@ public class UserController {
     public Result sendProjectData()
     {
         try {
+            userDao.updateData();
             return Result.success(userDao.getDataMap().formatMap());
         } catch (Exception e)
         {
@@ -129,6 +130,7 @@ public class UserController {
     public Result receiveTable(@RequestBody Table table, @RequestParam(value = "projectName")String projectName)
     {
         try {
+            boolean isRight = true;
             System.out.println("项目名" + projectName);
             String tableName = table.getTableName();
             System.out.println("表名" + tableName);
@@ -153,25 +155,35 @@ public class UserController {
                     else
                     {
                         res += "项目表记录添加失败！";
+                        isRight = false;
                     }
                 }
                 else
                 {
                     res += "数据库创建表失败！";
+                    isRight = false;
                     if(userDao.deleteTable(projectName, tableName))
                     {
                         res += "回滚删除表成功！";
                     }
 
                     else
+                    {
                         res += "回滚删除表失败！";
+                        isRight = false;
+                    }
+
                 }
             }
             else
             {
                 res += "项目结构添加表失败！";
+                isRight = false;
             }
-            return Result.success(res);
+            if(isRight)
+                return Result.success(res);
+            else
+                return Result.fail(res);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -207,7 +219,10 @@ public class UserController {
             System.out.println("项目描述" + description);
             String projectName = config.getProjectName();
             System.out.println("项目名" + projectName);
-            return Result.success(userDao.setConfig(projectName, config)?"项目设定成功！":"项目设定失败！");
+            if(userDao.setConfig(projectName, config))
+                return Result.success("项目设定成功！");
+            else
+                return Result.fail("项目设定失败！");
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -225,6 +240,7 @@ public class UserController {
     public Result deleteTable(@RequestBody JSONObject object)
     {
         try{
+            boolean isRight = true;
             String projectName = object.getString("projectName");
             String tableName = object.getString("tableName");
             String res = "";
@@ -237,14 +253,19 @@ public class UserController {
                 }
                 else
                 {
+                    isRight = false;
                     res += "数据库删除表相关项失败！";
                 }
             }
             else
             {
+                isRight = false;
                 res += "项目删除表失败！";
             }
-            return Result.success(res);
+            if(isRight)
+                return Result.success(res);
+            else
+                return Result.fail(res);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -261,7 +282,10 @@ public class UserController {
     {
         try {
             String projectName = object.getString("projectName");
-            return Result.success(userDao.deleteProject(projectName));
+            if(userDao.deleteProject(projectName))
+                return Result.success();
+            else
+                return Result.fail();
         } catch (Exception e)
         {
             e.printStackTrace();
