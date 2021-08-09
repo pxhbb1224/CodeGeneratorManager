@@ -275,6 +275,11 @@ public class UserController {
      * @return:com.cmbchina.code_generator.model.Result
      * @Author:Bin
      */
+    @PostMapping("/generated")
+    public void generatedCode(@RequestBody String projectName)
+    {
+        generatorService.generateCode(userDao.getUserData(projectName));
+    }
     @PostMapping("/generate")
     public void generateCode(@RequestBody JSONObject object,
                              HttpServletResponse response) throws IOException {
