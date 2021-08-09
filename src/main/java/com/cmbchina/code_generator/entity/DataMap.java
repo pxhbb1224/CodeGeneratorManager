@@ -1,6 +1,8 @@
 package com.cmbchina.code_generator.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
@@ -74,5 +76,20 @@ public class DataMap {
     public void clearMap()
     {
         userDataMap.clear();
+    }
+
+    /**
+     * 将map内容转化为ProjectData
+     * @return
+     */
+    public List<ProjectData> formatMap()
+    {
+        List<ProjectData> result = new ArrayList<>();
+        for(UserData userData : userDataMap.values())
+        {
+            ProjectData projectData = new ProjectData(userData);
+            result.add(projectData);
+        }
+        return result;
     }
 }

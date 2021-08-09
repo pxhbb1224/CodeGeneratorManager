@@ -83,6 +83,40 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
+    @PostMapping("/sendConfig")
+    public Result sendConfig(@RequestBody JSONObject object) {
+        try {
+            String projectName = object.getString("projectName");
+            return Result.success(userDao.getUserData(projectName).getConfig());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
+    @PostMapping("/sendTable")
+    public Result sendTable(@RequestBody JSONObject object) {
+        try {
+            String projectName = object.getString("projectName");
+            return Result.success(userDao.getUserData(projectName).getTableList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
+    @GetMapping("/sendProjectData")
+    public Result sendProjectData()
+    {
+        try {
+            return Result.success(userDao.getDataMap().formatMap());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
     /**
      * @Title:receiveTable
      * @Description:接收并存储表结构，建立数据库表

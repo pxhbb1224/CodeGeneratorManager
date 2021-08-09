@@ -21,6 +21,14 @@ public class UserDaoImpl implements UserDao{
     private DataMap dataMap = new DataMap();
 
     /**
+     * 返回DataMap
+     */
+    @Override
+    public DataMap getDataMap()
+    {
+        return dataMap;
+    }
+    /**
      * 数据库中创建表并添加table_info表记录
      * @param table
      * @return
