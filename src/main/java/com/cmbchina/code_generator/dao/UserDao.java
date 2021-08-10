@@ -1,17 +1,15 @@
 package com.cmbchina.code_generator.dao;
 
-import com.cmbchina.code_generator.entity.*;
+import com.cmbchina.code_generator.entity.Config;
+import com.cmbchina.code_generator.entity.Table;
+import com.cmbchina.code_generator.entity.TableColumns;
+import com.cmbchina.code_generator.entity.UserData;
 
 import java.util.List;
 
 
 public interface UserDao {
 
-    /**
-     * 返回DataMap
-     * @return
-     */
-    DataMap getDataMap();
     /**
      * 数据库中创建表并添加table_info表记录
      * @param table

@@ -308,17 +308,16 @@ public class UserController {
     public void generateCode(@RequestBody JSONObject object,
                              HttpServletResponse response) throws IOException {
         String projectName = object.getString("projectName");
-        if(generatorService.generateCode(userDao.getUserData(projectName)));
-        System.out.println(projectName);
-        generatorService.downloadCode(projectName, response);
-//        try
-//        {
-//            return Result.success();
-//        }catch(Exception e)
-//        {
-//            e.printStackTrace();
+        try{
+            if(generatorService.generateCode(userDao.getUserData(projectName))){
+                System.out.println(projectName);
+                generatorService.downloadCode(projectName, response);
+//                return Result.success();
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
 //            return Result.fail(e);
-//        }
+        }
     }
     /**
      * @Title:testMap
