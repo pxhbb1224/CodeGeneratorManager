@@ -63,7 +63,20 @@ public interface UserDao {
      * @return
      */
     boolean dropTable(String tableName);
+
+    /**
+     * 在project表中插入项目和表的对应关系
+     * @param projectName
+     * @param tableName
+     * @return
+     */
     boolean insertProject(String projectName, String tableName);
+
+    /**
+     * 删除项目结构及其关联数据库表
+     * @param projectName
+     * @return
+     */
     boolean deleteProject(String projectName);
     boolean dropProject(String projectName);
     boolean setConfig(String projectName, Config config);
