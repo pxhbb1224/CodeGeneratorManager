@@ -84,6 +84,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/sendOneTable")
+    public Result sendOneTable(@RequestBody JSONObject object) {
+        try {
+            String tableName = object.getString("tableName");
+            String projectName = object.getString("projectName");
+            return Result.success(userDao.getUserData(projectName).getTable(tableName));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
     @PostMapping("/sendConfig")
     public Result sendConfig(@RequestBody JSONObject object) {
         try {
@@ -97,6 +109,7 @@ public class UserController {
 
     @PostMapping("/sendTable")
     public Result sendTable(@RequestBody JSONObject object) {
+
         try {
             String projectName = object.getString("projectName");
             return Result.success(userDao.getUserData(projectName).getTableList());
@@ -240,6 +253,7 @@ public class UserController {
     public Result deleteTable(@RequestBody JSONObject object)
     {
         try{
+            System.out.println("delete table...");
             boolean isRight = true;
             String projectName = object.getString("projectName");
             String tableName = object.getString("tableName");
@@ -281,6 +295,7 @@ public class UserController {
     public Result deleteProject(@RequestBody JSONObject object)
     {
         try {
+            System.out.println("delete project...");
             String projectName = object.getString("projectName");
             if(userDao.deleteProject(projectName))
                 return Result.success();

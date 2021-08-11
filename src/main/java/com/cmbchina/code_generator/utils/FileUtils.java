@@ -148,7 +148,6 @@ public class FileUtils {
         System.out.println(uploadPath + File.separator + filename);
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(new File(uploadPath + File.separator + filename)));
         byte[] buff = new byte[1024];
-        System.out.println(bis);
         int readTmp;
         //int i = bis.read(buff);
         while ((readTmp = bis.read(buff)) > 0) {

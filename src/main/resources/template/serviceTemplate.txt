@@ -4,7 +4,7 @@ package ${packagePath};
 /**
  * ${classDescription}
  * @author ${author}
- * @datetime ${dataTime}
+ * @datetime ${dateTime}
  */
 public interface ${className}Service  {
 

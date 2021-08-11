@@ -239,17 +239,16 @@ public class UserDaoImpl implements UserDao{
         if(dataMap.getUserDataMap().containsKey(projectName))
         {
             UserData userData = dataMap.getUserDataMap().get(projectName);
-            for(Table t : userData.getTableList())
-            {
-                if(dropTable(t.getTableName()))//删除数据库中表以及table表中的记录
-                {
-                    System.out.println("删除数据库表" + t.getTableName() + "成功！");
-                }
-                else
-                {
-                    System.out.println("删除数据库表" + t.getTableName() + "失败！");
-                }
+            if(userData.getTableList() != null) {
+                for (Table t : userData.getTableList()) {
+                    if (dropTable(t.getTableName()))//删除数据库中表以及table表中的记录
+                    {
+                        System.out.println("删除数据库表" + t.getTableName() + "成功！");
+                    } else {
+                        System.out.println("删除数据库表" + t.getTableName() + "失败！");
+                    }
 
+                }
             }
 
             //删除配置表中的记录             删除项目表中的记录

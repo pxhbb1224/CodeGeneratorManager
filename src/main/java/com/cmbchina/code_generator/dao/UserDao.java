@@ -90,4 +90,6 @@ public interface UserDao {
     void updateData();
     Table formatToTable(List<TableColumns> tableColumnsList);
     void printDataMap();
+
+    DataMap getDataMap();
 }

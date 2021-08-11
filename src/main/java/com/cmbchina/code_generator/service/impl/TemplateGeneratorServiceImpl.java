@@ -104,19 +104,25 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      * @param name
      * @return
      */
-    private String getWriteFilePath(String name, String projectName, String tableName) {
+    private String getWriteFilePath(String name, String projectName, String tableName, String prefix) {
         if (TemplateCommon.entity.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.entity;
+            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\" + TemplateCommon.entity;
         } else if (TemplateCommon.dao.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.dao;
+            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\" + TemplateCommon.dao;
         } else if (TemplateCommon.service.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath()  + projectName + "\\" + tableName + "\\" + TemplateCommon.service;
+            return codeGeneratorConfig.getWriteFileBasePath()  + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\" + TemplateCommon.service;
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\" + TemplateCommon.service + "\\" + TemplateCommon.impl;
+            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\" + TemplateCommon.service + "\\" + TemplateCommon.impl;
         } else if (TemplateCommon.controller.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + projectName + "\\" + tableName + "\\"  + TemplateCommon.controller;
+            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\"  + TemplateCommon.controller;
         }else if (TemplateCommon.mapper.equals(name)) {
-            return codeGeneratorConfig.getMapperPath() + projectName + "\\" + tableName + "\\" + TemplateCommon.mapper;
+            return codeGeneratorConfig.getMapperPath() + configService.getClassName(projectName,prefix)
+                    + "\\" + tableName + "\\" + TemplateCommon.mapper;
         }
         return "";
     }
@@ -156,22 +162,22 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      */
     private void fileWrite(String name, String prefix, String tableName, String fileName, String projectName) {
         if (TemplateCommon.entity.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.entity, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.entity, projectName, tableName, prefix),
                     getWriteFileName(TemplateCommon.entity, prefix, tableName), fileName);
         } else if (TemplateCommon.dao.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.dao, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.dao, projectName, tableName, prefix),
                     getWriteFileName(TemplateCommon.dao, prefix, tableName), fileName);
         } else if (TemplateCommon.service.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.service, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.service, projectName, tableName, prefix),
                     getWriteFileName(TemplateCommon.service, prefix, tableName), fileName);
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.serviceImpl, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.serviceImpl, projectName, tableName,  prefix),
                     getWriteFileName(TemplateCommon.serviceImpl, prefix, tableName), fileName);
         } else if (TemplateCommon.controller.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.controller, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.controller, projectName, tableName, prefix),
                     getWriteFileName(TemplateCommon.controller, prefix, tableName), fileName);
         }else if (TemplateCommon.mapper.equals(name)) {
-            FileUtils.writeContent(getWriteFilePath(TemplateCommon.mapper, projectName, tableName),
+            FileUtils.writeContent(getWriteFilePath(TemplateCommon.mapper, projectName, tableName, prefix),
                     getWriteFileName(TemplateCommon.mapper, prefix, tableName), fileName);
         }
 
