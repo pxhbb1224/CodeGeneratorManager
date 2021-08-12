@@ -27,10 +27,10 @@ public interface UserMapper {
 
     /**
      * 获取项目中所有表的表名
-     * @param projectName
+     * @param projectId
      * @return
      */
-    List<String> getTable(String projectName);
+    List<String> getTable(String projectId);
 
     /**
      * 获取对应表的生成时间
@@ -47,9 +47,9 @@ public interface UserMapper {
 
     /**
      * 从config表中删除配置
-     * @param projectName
+     * @param projectId
      */
-    void dropConfig(String projectName);
+    void dropConfig(String projectId);
 
     /**
      * 往config表中添加或修改配置
@@ -59,43 +59,43 @@ public interface UserMapper {
 
     /**
      * 确定config表中是否存在特定配置
-     * @param projectName
+     * @param projectId
      * @return
      */
-    int isConfigExists(String projectName);
+    int isConfigExists(String projectId);
 
     /**
      * 往project表中添加项目和表的对应关系
-     * @param projectName
-     * @param tableName
+     * @param projectId
+     * @param tableId
      */
-    void addProject(@Param("projectName") String projectName, @Param("tableName") String tableName);
+    void addProject(@Param("projectId") String projectId, @Param("tableId") String tableId);
 
     /**
      * 删除特定表在project表中的记录
-     * @param tableName
+     * @param tableId
      */
-    void deleteProject(String tableName);
+    void deleteProject(String tableId);
 
     /**
      * 删除特定项目在project表中的记录
-     * @param projectName
+     * @param projectId
      */
-    void dropProject(String projectName);
+    void dropProject(String projectId);
 
     /**
      * 查看特定项目是否在project表中存在
-     * @param projectName
+     * @param projectId
      * @return
      */
-    int isProjectExists(String projectName);
+    int isProjectExists(String projectId);
 
     /**
      * 查看特定表是否在project表中存在
-     * @param tableName
+     * @param tableId
      * @return
      */
-    int isExistsInProject(String tableName);
+    int isExistsInProject(String tableId);
 
     /**
      * 用drop删除数据库表
@@ -105,16 +105,17 @@ public interface UserMapper {
 
     /**
      * 删除特定表在table_info表中的记录
-     * @param tableName
+     * @param tableId
      */
-    void deleteTable(String tableName);
+    void deleteTable(String tableId);
 
     /**
      * 向table_info表中插入表数据
+     * @param tableId
      * @param tableName
      * @param generateTime
      */
-    void insertTable(@Param("tableName") String tableName, @Param("generateTime") String generateTime);
+    void insertTable(@Param("tableId") String tableId, @Param("tableName") String tableName, @Param("generateTime") String generateTime);
 
     /**
      * 创建数据库表
@@ -131,8 +132,8 @@ public interface UserMapper {
 
     /**
      * 查看特定表是否在table_info表中存在
-     * @param tableName
+     * @param tableId
      * @return
      */
-    int isExistsInTable(String tableName);
+    int isExistsInTable(String tableId);
 }

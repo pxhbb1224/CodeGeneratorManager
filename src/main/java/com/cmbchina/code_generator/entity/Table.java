@@ -9,6 +9,7 @@ import java.util.List;
  */
 @Data
 public class Table {
+    private String tableId; //数据库表id
     private String tableName; //数据库表名
     private List<Attribute>  properties; //数据库表含有的属性
     private String comment; //表注释

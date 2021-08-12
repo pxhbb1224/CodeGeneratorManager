@@ -11,11 +11,11 @@ public class ProjectData {
     private int tableCount;
     private String generateTime;
 
-    public ProjectData(UserData userData)
+    public ProjectData(Config config, int tableNum)
     {
-        name = userData.getConfig().getProjectName();
-        info = userData.getConfig().getDescription();
-        tableCount = userData.getTableList() == null ? 0 : userData.getTableList().size();
-        generateTime = userData.getConfig().getGenerateTime();
+        name = config.getProjectName();
+        info = config.getDescription();
+        tableCount = tableNum;
+        generateTime = config.getGenerateTime();
     }
 }

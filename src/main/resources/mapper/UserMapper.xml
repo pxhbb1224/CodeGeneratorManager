@@ -30,13 +30,13 @@
             C.ORDINAL_POSITION;
     </select>
     <select id="getConfig" resultType="com.cmbchina.code_generator.entity.Config">
-        SELECT * FROM config
+        SELECT * FROM config1
     </select>
     <select id="getTable" parameterType="String" resultType="String">
-        SELECT table_name FROM project where project.project_name = #{projectName}
+        SELECT table_id FROM project1 where project_id = #{projectId}
     </select>
     <select id="getTime" resultType="String">
-        SELECT generate_time FROM table_info where table_name = #{tableName}
+        SELECT generate_time FROM table_info1 where table_name = #{tableName}
     </select>
     <select id="findAll" resultType="com.cmbchina.code_generator.entity.User">
         SELECT * FROM tb_user
@@ -48,41 +48,41 @@
         ${str}
     </update>
     <insert id="insertTable">
-        insert into table_info(table_name, generate_time) values(#{tableName}, #{generateTime})
+        insert into table_info1(table_id, table_name, generate_time) values(#{tableId}, #{tableName}, #{generateTime})
     </insert>
     <update id="deleteTable" parameterType="String">
-        delete from table_info where table_name = #{tableName}
+        delete from table_info1 where table_id = #{tableId}
     </update>
     <select id="isTableExists" parameterType="String" resultType="Integer">
         select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME`= #{tableName}
     </select>
     <select id="isExistsInTable" parameterType="String" resultType="Integer">
-        select COUNT(*) from table_info where table_name = #{tableName}
+        select COUNT(*) from table_info1 where table_id = #{tableId}
     </select>
     <select id="isExistsInProject" parameterType="String" resultType="Integer">
-        select COUNT(*) from project where table_name = #{tableName}
+        select COUNT(*) from project1 where table_id = #{tableId}
     </select>
     <select id="isProjectExists" parameterType="String" resultType="Integer">
-        select COUNT(*) from project where project_name = #{projectName}
+        select COUNT(*) from project1 where project_id = #{projectId}
     </select>
     <select id="isConfigExists" parameterType="String" resultType="Integer">
-        select COUNT(*) from config where project_name = #{projectName}
+        select COUNT(*) from config1 where project_id = #{projectId}
     </select>
     <insert id="addProject">
-        insert into project(project_name, table_name) values(#{projectName}, #{tableName})
+        insert into project1(project_id, table_id) values(#{projectId}, #{tableId})
     </insert>
     <update id="deleteProject" parameterType="String">
-        delete from project where table_name = #{tableName}
+        delete from project1 where table_name = #{tableName}
     </update>
     <update id="dropProject" parameterType="String">
-        delete from project where project_name = #{projectName}
+        delete from project1 where project_id = #{projectId}
     </update>
     <insert id="setConfig" parameterType="com.cmbchina.code_generator.entity.Config">
-        replace into config(package_name, author_name, prefix, need_covered, description, project_name, generate_time)
-        values(#{projectName}, #{authorName}, #{prefix}, ${needCovered},
-               #{description}, #{projectName}, #{generateTime})
+        replace into config1(package_name, author_name, prefix, need_covered, description, project_name, project_id, generate_time)
+        values(#{packageName}, #{authorName}, #{prefix}, ${needCovered},
+               #{description}, #{projectName}, #{projectId}, #{generateTime})
     </insert>
     <update id="dropConfig" parameterType="String">
-        delete from config where project_name = #{projectName}
+        delete from config1 where project_id = #{projectId}
     </update>
 </mapper>

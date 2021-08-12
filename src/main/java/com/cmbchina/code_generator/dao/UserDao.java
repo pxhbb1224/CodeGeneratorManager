@@ -11,85 +11,70 @@ public interface UserDao {
      * 返回DataMap
      * @return
      */
-    DataMap getDataMap();
-
+    DataMap getDataMap();//
     /**
      * 数据库中创建表并添加table_info表记录
      * @param table
      * @return
      */
-    boolean createTable(Table table);
+    boolean createTable(Table table);//
 
     /**
      * 返回表是否存在(同时检查数据库中和table_info中的记录)
-     * @param tableName
+     * @param tableId
      * @return
      */
-    boolean isTableExists(String tableName);
+    boolean isTableExists(String tableId);//
 
     /**
      * 返回项目是否存在
-     * @param projectName
+     * @param projectId
      * @return
      */
-    boolean isProjectExists(String projectName);
+    boolean isProjectExists(String projectId);//
 
     /**
      * 返回配置是否存在
      * @param projectName
      * @return
      */
-    boolean isConfigExists(String projectName);
+    boolean isConfigExists(String projectName);//
 
 
     /**
      * 往项目结构中添加表
-     * @param projectName
+     * @param projectId
      * @param table
      * @return
      */
-    boolean addTable(String projectName, Table table);
+    boolean addTable(String projectId, Table table);//
 
     /**
-     * 删除对应项目结构中的表,tableName为空时删除项目
-     * @param projectName
+     * 删除结构中的项目和表的映射,projectId为空时删除所有相关映射
+     * @param projectId
+     * @param tableId
      * @return
      */
-    boolean deleteTable(String projectName, String tableName);
+    boolean deleteTable(String projectId, String tableId);//
 
     /**
      * 数据库中删除表，同时删除table_info和project表中记录
-     * @param tableName
+     * @param tableId
      * @return
      */
-    boolean dropTable(String tableName);
-
-    /**
-     * 在project表中插入项目和表的对应关系
-     * @param projectName
-     * @param tableName
-     * @return
-     */
-    boolean insertProject(String projectName, String tableName);
-
-    /**
-     * 删除项目结构及其关联数据库表
-     * @param projectName
-     * @return
-     */
-    boolean deleteProject(String projectName);
-    boolean dropProject(String projectName);
-    boolean setConfig(String projectName, Config config);
-    boolean insertConfig(String projectName, Config config);
-    boolean dropConfig(String projectName);
-    UserData getUserData(String projectName);
-    List<TableColumns> getInfo(String tableName);
-    List<Config> getConfig();
-    List<String> getTable(String projectName);
-    String getTime(String tableName);
-    void updateData();
-    Table formatToTable(List<TableColumns> tableColumnsList);
-    void printDataMap();
-
-    DataMap getDataMap();
+    boolean dropTable(String tableId);//
+    boolean insertProject(String projectId, String tableId);//
+    boolean deleteProject(String projectId);//
+    boolean dropProject(String projectId);//
+    boolean setConfig(String projectId, Config config);//
+    boolean insertConfig(String projectId, Config config);//
+    boolean dropConfig(String projectId);//
+    UserData getUserData(String projectId);//
+    List<TableColumns> getInfo(String tableName);//保留
+    List<Config> getConfig();//
+    List<String> getTable(String projectId);//
+    String getTime(String tableName);//保留
+    void updateData();//
+    Table formatToTable(List<TableColumns> tableColumnsList);//
+    void printDataMap();//
 }

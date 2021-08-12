@@ -2,12 +2,10 @@ package com.cmbchina.code_generator.service;
 
 import com.cmbchina.code_generator.entity.Config;
 import com.cmbchina.code_generator.entity.Table;
+import com.cmbchina.code_generator.entity.Relation;
 import com.cmbchina.code_generator.entity.UserData;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 

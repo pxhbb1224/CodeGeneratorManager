@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class Config {
 
+    private String projectId; //项目id
+    private String projectName; //项目名
     private String packageName; //包名
     private String authorName; //作者名
     //private String moduleName;
@@ -17,6 +19,5 @@ public class Config {
     private String prefix; //前缀
     private int needCovered; //是否覆盖
     private String description; //项目描述
-    private String projectName; //项目名
     String generateTime;//生成时间
 }

@@ -73,6 +73,12 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
+    /**
+     * 获取数据库表的信息
+     * @param object
+     * @return
+     */
     @PostMapping("/getInfo")
     public Result getInfo(@RequestBody JSONObject object) {
         try {
@@ -84,6 +90,11 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param object
+     * @return
+     */
     @PostMapping("/sendOneTable")
     public Result sendOneTable(@RequestBody JSONObject object) {
         try {
