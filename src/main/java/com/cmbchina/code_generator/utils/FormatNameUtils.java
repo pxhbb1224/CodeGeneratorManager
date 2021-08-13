@@ -45,7 +45,7 @@ public class FormatNameUtils {
     {
         String res = "create table ";
         List<String> foreignList = new ArrayList<>();
-        res += table.getTableName();
+        res += table.getTableName() + "/" + table.getTableId();
         res += "(";
         for(Attribute a: table.getProperties())
         {

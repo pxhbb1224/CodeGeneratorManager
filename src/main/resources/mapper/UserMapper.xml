@@ -24,7 +24,7 @@
                 AND T.TABLE_SCHEMA = C.TABLE_SCHEMA
         WHERE
             T.TABLE_SCHEMA = 'db'
-          AND T.TABLE_NAME = #{tableName}
+          AND T.TABLE_NAME like #{tableName}
         ORDER BY
             C.TABLE_NAME,
             C.ORDINAL_POSITION;
@@ -54,7 +54,7 @@
         delete from table_info1 where table_id = #{tableId}
     </update>
     <select id="isTableExists" parameterType="String" resultType="Integer">
-        select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME`= #{tableName}
+        select COUNT(*) from `INFORMATION_SCHEMA`.`TABLES` t where t.`TABLE_SCHEMA`='db' and t.`TABLE_NAME` like #{tableId}
     </select>
     <select id="isExistsInTable" parameterType="String" resultType="Integer">
         select COUNT(*) from table_info1 where table_id = #{tableId}

@@ -38,10 +38,12 @@ public class UserDaoImpl implements UserDao{
     public boolean createTable(Table table) {
         try
         {
+            String tableId = table.getTableId();
+            String tableName = table.getTableName();
             String str = FormatNameUtils.formatToCreateSql(table);
             userMapper.createTable(str);//创建数据库表
-            userMapper.insertTable(table.getTableId(), table.getTableName(), table.getGenerateTime());//添加table_info表记录
-            return isTableExists(table.getTableId());
+            userMapper.insertTable(tableId, tableName, table.getGenerateTime());//添加table_info表记录
+            return isTableExists(tableId);
         }
         catch(Exception e)
         {
@@ -52,6 +54,7 @@ public class UserDaoImpl implements UserDao{
 
     /**
      * 返回表是否存在(同时检查数据库中和table_info中的记录)
+     * 参数实际上是"table_name/tableId"
      * @param tableId
      * @return
      */
@@ -60,7 +63,7 @@ public class UserDaoImpl implements UserDao{
     {
         try
         {
-            return (userMapper.isTableExists(dataMap.getTableName(tableId)) +
+            return (userMapper.isTableExists('%' + tableId) +
                     userMapper.isExistsInTable(tableId) == 2 ? true : false);
         }
         catch(Exception e)
@@ -130,6 +133,25 @@ public class UserDaoImpl implements UserDao{
     }
 
     /**
+     * 修改数据库中表，同时修改table_info表信息
+     * 注意，tableId不会改变
+     * @param table
+     * @return
+     */
+    public boolean replaceTable(Table table)
+    {
+        String tableId = table.getTableId();
+        if(tableId != null)
+            if(dataMap.getTableMap().containsKey(tableId))
+            {
+                if(dropTable(table.getTableId()))
+                    if(createTable(table))
+                        return dataMap.setTableMap(table);
+            }
+        return false;
+    }
+
+    /**
      * 删除对应项目结构中的表，返回值代表需不需要删除数据库表
      * @param projectId
      * @param tableId
@@ -159,7 +181,7 @@ public class UserDaoImpl implements UserDao{
         try
         {
             String tableName = dataMap.getTableName(tableId);
-            String str = FormatNameUtils.formatToDropSql(tableName);
+            String str = FormatNameUtils.formatToDropSql(tableName + "/" + tableId);
             userMapper.dropTable(str);//删除数据库表
             userMapper.deleteTable(tableId);//删除table_info表中记录
             userMapper.deleteProject(tableId);//删除project表中记录
@@ -396,9 +418,9 @@ public class UserDaoImpl implements UserDao{
             String projectId = config.getProjectId();
             setConfig(projectId, config);
             List<String> tableList = getTable(projectId);
-            for(String tableName : tableList)
+            for(String tableId : tableList)
             {
-                addTable(projectId, formatToTable(getInfo(tableName)));
+                addTable(projectId, formatToTable(getInfo('%' + tableId)));
             }
         }
         return;
@@ -416,7 +438,9 @@ public class UserDaoImpl implements UserDao{
         Table t = new Table();
         if(tableColumnsList.size() == 0)
             return t;
-        t.setTableName(tableColumnsList.get(0).getTableName());
+        String tableName = tableColumnsList.get(0).getTableName();
+        t.setTableId(tableName.substring(tableName.lastIndexOf("/") + 1));
+        t.setTableName(tableName.substring(0, tableName.lastIndexOf("/")));
         t.setComment(tableColumnsList.get(0).getTableComment());
         t.setGenerateTime(getTime(tableColumnsList.get(0).getTableName()));
         for(TableColumns column : tableColumnsList)

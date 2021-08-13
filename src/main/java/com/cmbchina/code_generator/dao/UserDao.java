@@ -50,11 +50,20 @@ public interface UserDao {
     boolean addTable(String projectId, Table table);//
 
     /**
+     * 修改数据库中表，同时修改table_info表信息
+     * 注意，tableId不会改变
+     * @param table
+     * @return
+     */
+    boolean replaceTable(Table table);//
+
+    /**
      * 删除结构中的项目和表的映射,projectId为空时删除所有相关映射
      * @param projectId
      * @param tableId
      * @return
      */
+
     boolean deleteTable(String projectId, String tableId);//
 
     /**

@@ -52,7 +52,7 @@ public class DataMap {
                 System.out.println("关系已存在！");
                 return false;
             }
-        return false;
+        return true;
     }
 
     /**
@@ -146,6 +146,23 @@ public class DataMap {
         }
         else
             return null;
+    }
+
+    /**
+     * 修改表结构中的表
+     * @param table
+     * @return
+     */
+    public boolean setTableMap(Table table)
+    {
+        String tableId = table.getTableId();
+        if(tableId != null)
+            if(tableMap.containsKey(tableId))
+            {
+                tableMap.replace(tableId, table);
+                return true;
+            }
+        return false;
     }
     /**
      * 删除relation中项目和表相应的映射,返回值反映需不需要删除数据库表

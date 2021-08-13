@@ -125,10 +125,10 @@ public interface UserMapper {
 
     /**
      * 查看特定表是否在数据库中存在
-     * @param tableName
+     * @param tableId
      * @return
      */
-    int isTableExists(String tableName);
+    int isTableExists(String tableId);
 
     /**
      * 查看特定表是否在table_info表中存在
