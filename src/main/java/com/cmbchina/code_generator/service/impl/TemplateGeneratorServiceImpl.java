@@ -106,23 +106,23 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
      */
     private String getWriteFilePath(String name, String projectName, String tableName, String prefix) {
         if (TemplateCommon.entity.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\" + TemplateCommon.entity;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\" + TemplateCommon.entity;
         } else if (TemplateCommon.dao.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\" + TemplateCommon.dao;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\" + TemplateCommon.dao;
         } else if (TemplateCommon.service.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath()  + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\" + TemplateCommon.service;
+            return codeGeneratorConfig.getWriteFileBasePath()  + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\" + TemplateCommon.service;
         } else if (TemplateCommon.serviceImpl.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\" + TemplateCommon.service + "\\" + TemplateCommon.impl;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\" + TemplateCommon.service + "\\" + TemplateCommon.impl;
         } else if (TemplateCommon.controller.equals(name)) {
-            return codeGeneratorConfig.getWriteFileBasePath() + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\"  + TemplateCommon.controller;
+            return codeGeneratorConfig.getWriteFileBasePath() + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\"  + TemplateCommon.controller;
         }else if (TemplateCommon.mapper.equals(name)) {
-            return codeGeneratorConfig.getMapperPath() + configService.getClassName(projectName,prefix)
-                    + "\\" + tableName + "\\" + TemplateCommon.mapper;
+            return codeGeneratorConfig.getMapperPath() + projectName
+                    + "\\" + configService.getClassName(tableName, prefix) + "\\" + TemplateCommon.mapper;
         }
         return "";
     }

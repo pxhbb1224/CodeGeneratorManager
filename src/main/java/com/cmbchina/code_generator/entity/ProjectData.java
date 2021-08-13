@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class ProjectData {
 
+    private String id;
     private String name;
     private String info;
     private int tableCount;
@@ -13,6 +14,7 @@ public class ProjectData {
 
     public ProjectData(Config config, int tableNum)
     {
+        id = config.getProjectId();
         name = config.getProjectName();
         info = config.getDescription();
         tableCount = tableNum;

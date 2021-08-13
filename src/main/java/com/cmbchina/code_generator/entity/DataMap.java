@@ -26,7 +26,6 @@ public class DataMap {
         if(table != null)
         {
             String tableId = table.getTableId();
-            String tableName = table.getTableName();
             if(!tableMap.containsKey(tableId))//如果不存在对应表
             {
                 tableMap.put(tableId, table);
@@ -74,8 +73,67 @@ public class DataMap {
         }
         return configMap.containsKey(id);
     }
+
     /**
-     * 删除项目
+     * 修改表结构中的表
+     * @param table
+     * @return
+     */
+    public boolean setTableMap(Table table)
+    {
+        String tableId = table.getTableId();
+        if(tableId != null)
+            if(tableMap.containsKey(tableId))
+            {
+                tableMap.replace(tableId, table);
+                return true;
+            }
+        return false;
+    }
+
+
+
+    public String getTableName(String tableId)
+    {
+        if(tableMap.containsKey(tableId))
+        {
+            return tableMap.get(tableId).getTableName();
+        }
+        else
+            return null;
+    }
+
+    public String getProjectName(String projectId)
+    {
+        if(configMap.containsKey(projectId))
+        {
+            return configMap.get(projectId).getProjectName();
+        }
+        else
+            return null;
+    }
+
+    public Table getTable(String tableId)
+    {
+        if(tableMap.containsKey(tableId))
+        {
+            return tableMap.get(tableId);
+        }
+        else
+            return null;
+    }
+
+    public Config getConfig(String projectId)
+    {
+        if(configMap.containsKey(projectId))
+        {
+            return configMap.get(projectId);
+        }
+        else
+            return null;
+    }
+    /**
+     * 删除项目,返回需要删除的数据库表
      * @param projectId
      * @return
      */
@@ -107,8 +165,9 @@ public class DataMap {
                         referenceNum.remove(tableId);
                         if(tableMap.containsKey(tableId))
                         {
+                            tableList.add(tableId + "_" + getTableName(tableId));
                             tableMap.remove(tableId);
-                            tableList.add(tableId);
+
                         }
                     }
                 }
@@ -128,42 +187,6 @@ public class DataMap {
         return tableList;
     }
 
-    public String getTableName(String tableId)
-    {
-        if(tableMap.containsKey(tableId))
-        {
-            return tableMap.get(tableId).getTableName();
-        }
-        else
-            return null;
-    }
-
-    public String getProjectName(String projectId)
-    {
-        if(configMap.containsKey(projectId))
-        {
-            return configMap.get(projectId).getProjectName();
-        }
-        else
-            return null;
-    }
-
-    /**
-     * 修改表结构中的表
-     * @param table
-     * @return
-     */
-    public boolean setTableMap(Table table)
-    {
-        String tableId = table.getTableId();
-        if(tableId != null)
-            if(tableMap.containsKey(tableId))
-            {
-                tableMap.replace(tableId, table);
-                return true;
-            }
-        return false;
-    }
     /**
      * 删除relation中项目和表相应的映射,返回值反映需不需要删除数据库表
      * @param projectId
@@ -186,6 +209,8 @@ public class DataMap {
                 else
                 {
                     referenceNum.remove(tableId);
+                    tableMap.remove(tableId);
+                    System.out.println("引用为零，删除");
                     return true;
                 }
 

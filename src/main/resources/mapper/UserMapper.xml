@@ -35,6 +35,9 @@
     <select id="getTable" parameterType="String" resultType="String">
         SELECT table_id FROM project1 where project_id = #{projectId}
     </select>
+    <select id="getTableName" resultType="String">
+    SELECT table_name FROM table_info1 where table_id = #{tableId}
+    </select>
     <select id="getTime" resultType="String">
         SELECT generate_time FROM table_info1 where table_name = #{tableName}
     </select>
@@ -69,10 +72,10 @@
         select COUNT(*) from config1 where project_id = #{projectId}
     </select>
     <insert id="addProject">
-        insert into project1(project_id, table_id) values(#{projectId}, #{tableId})
+        insert into project1(relation_id, project_id, table_id) values(#{relationId}, #{projectId}, #{tableId})
     </insert>
     <update id="deleteProject" parameterType="String">
-        delete from project1 where table_name = #{tableName}
+        delete from project1 where table_id = #{tableId}
     </update>
     <update id="dropProject" parameterType="String">
         delete from project1 where project_id = #{projectId}

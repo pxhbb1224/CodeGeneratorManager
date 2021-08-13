@@ -20,11 +20,18 @@ public interface UserDao {
     boolean createTable(Table table);//
 
     /**
-     * 返回表是否存在(同时检查数据库中和table_info中的记录)
+     * 返回表是否存在于数据库中
      * @param tableId
      * @return
      */
     boolean isTableExists(String tableId);//
+
+    /**
+     * 返回table_info表中是否存在记录
+     * @param tableId
+     * @return
+     */
+    boolean isExistsInTable(String tableId);//
 
     /**
      * 返回项目是否存在
@@ -68,10 +75,12 @@ public interface UserDao {
 
     /**
      * 数据库中删除表，同时删除table_info和project表中记录
+     * 布尔值代表是否忽略删除项目表中的记录
      * @param tableId
+     * @param leaveProject
      * @return
      */
-    boolean dropTable(String tableId);//
+    boolean dropTable(String tableId, boolean leaveProject);//
     boolean insertProject(String projectId, String tableId);//
     boolean deleteProject(String projectId);//
     boolean dropProject(String projectId);//

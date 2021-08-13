@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -82,8 +83,8 @@ public class UserController {
     @PostMapping("/getInfo")
     public Result getInfo(@RequestBody JSONObject object) {
         try {
-            String tableName = object.getString("tableName");
-            return Result.success(userDao.getInfo(tableName));
+            String tableId = object.getString("tableId");
+            return Result.success(userDao.getInfo(tableId));
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -98,9 +99,8 @@ public class UserController {
     @PostMapping("/sendOneTable")
     public Result sendOneTable(@RequestBody JSONObject object) {
         try {
-            String tableName = object.getString("tableName");
-            String projectName = object.getString("projectName");
-            return Result.success(userDao.getUserData(projectName).getTable(tableName));
+            String tableId = object.getString("tableId");
+            return Result.success(userDao.getDataMap().getTable(tableId));
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -110,8 +110,8 @@ public class UserController {
     @PostMapping("/sendConfig")
     public Result sendConfig(@RequestBody JSONObject object) {
         try {
-            String projectName = object.getString("projectName");
-            return Result.success(userDao.getUserData(projectName).getConfig());
+            String projectId = object.getString("projectId");
+            return Result.success(userDao.getDataMap().getConfig(projectId));
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -122,8 +122,8 @@ public class UserController {
     public Result sendTable(@RequestBody JSONObject object) {
 
         try {
-            String projectName = object.getString("projectName");
-            return Result.success(userDao.getUserData(projectName).getTableList());
+            String projectId = object.getString("projectId");
+            return Result.success(userDao.getUserData(projectId).getTableList());
         } catch (Exception e) {
             e.printStackTrace();
             return Result.fail(e);
@@ -151,11 +151,10 @@ public class UserController {
      * @Author:Bin
      */
     @PostMapping("/table")
-    public Result receiveTable(@RequestBody Table table, @RequestParam(value = "projectName")String projectName)
+    public Result receiveTable(@RequestBody Table table, @RequestParam(value = "projectId")String projectId)
     {
         try {
             boolean isRight = true;
-            System.out.println("项目名" + projectName);
             String tableName = table.getTableName();
             System.out.println("表名" + tableName);
             List<Attribute> attributes = table.getProperties();
@@ -166,43 +165,56 @@ public class UserController {
             String comment = table.getComment();
             System.out.println("注释" + comment);
             String res = "";
-            if(userDao.addTable(projectName, table))
-            {
-                res += "项目结构添加表成功！";
-                if(userDao.createTable(table))
-                {
-                    res += "数据库创建表成功！";
-                    if(userDao.insertProject(projectName, tableName))
-                    {
-                        res += "项目表记录添加成功！";
-                    }
-                    else
-                    {
-                        res += "项目表记录添加失败！";
+            String tableId = table.getTableId();
+            if(tableId == null || tableId.trim().length() == 0) {
+                tableId = UUID.randomUUID().toString().replace("-", "");
+                table.setTableId(tableId);
+                if (userDao.addTable(projectId, table)) {
+                    res += "项目结构添加表成功！";
+                    if (userDao.createTable(table)) {
+                        res += "数据库创建表成功！";
+                        if (userDao.insertProject(projectId, tableId)) {
+                            res += "项目表记录添加成功！";
+                        } else {
+                            res += "项目表记录添加失败！";
+                            isRight = false;
+                            if(userDao.dropTable(tableId, false))
+                            {
+                                res += "数据库回滚删除表成功！";
+                                if (userDao.deleteTable(projectId, tableId)) {
+                                    res += "回滚删除项目结构表成功！";
+                                } else {
+                                    res += "回滚删除项目结构表失败！";
+                                }
+                            }
+                            else
+                            {
+                                res += "数据库回滚删除表失败！";
+                            }
+                        }
+                    } else {
+                        res += "数据库创建表失败！";
                         isRight = false;
+                        if (userDao.deleteTable(projectId, tableId)) {
+                            res += "回滚删除项目结构表成功！";
+                        } else {
+                            res += "回滚删除项目结构表失败！";
+                        }
                     }
-                }
-                else
-                {
-                    res += "数据库创建表失败！";
-                    isRight = false;
-                    if(userDao.deleteTable(projectName, tableName))
-                    {
-                        res += "回滚删除表成功！";
-                    }
-
-                    else
-                    {
-                        res += "回滚删除表失败！";
-                        isRight = false;
-                    }
-
                 }
             }
             else
             {
-                res += "项目结构添加表失败！";
-                isRight = false;
+                if(userDao.replaceTable(table))
+                {
+                    res += "修改表成功！";
+                }
+                else
+                {
+                    res += "修改表失败！";
+                    isRight = false;
+                }
+
             }
             if(isRight)
                 return Result.success(res);
@@ -243,7 +255,14 @@ public class UserController {
             System.out.println("项目描述" + description);
             String projectName = config.getProjectName();
             System.out.println("项目名" + projectName);
-            if(userDao.setConfig(projectName, config))
+            String projectId = config.getProjectId();
+            if(projectId == null || projectId.trim().length() == 0) {
+                projectId = UUID.randomUUID().toString().replace("-", "");
+                config.setProjectId(projectId);
+            }
+            else
+                System.out.println("项目id" + projectId);
+            if(userDao.setConfig(projectId, config))
                 return Result.success("项目设定成功！");
             else
                 return Result.fail("项目设定失败！");
@@ -266,26 +285,26 @@ public class UserController {
         try{
             System.out.println("delete table...");
             boolean isRight = true;
-            String projectName = object.getString("projectName");
-            String tableName = object.getString("tableName");
+            String projectId = object.getString("projectId");
+            String tableId = object.getString("tableId");
             String res = "";
-            if(userDao.deleteTable(projectName, tableName))
+            if(userDao.dropTable(tableId, false))//尽量先删除数据库中记录,否则要从数据库中取tableName
             {
-                res += "项目删除表成功！";
-                if(userDao.dropTable(tableName))
+                res += "数据库删除表相关项成功！";
+                if(userDao.deleteTable(projectId, tableId))
                 {
-                    res += "数据库删除表相关项成功！";
+                    res += "项目删除表成功！";
                 }
                 else
                 {
                     isRight = false;
-                    res += "数据库删除表相关项失败！";
+                    res += "项目删除表失败！";
                 }
             }
             else
             {
                 isRight = false;
-                res += "项目删除表失败！";
+                res += "数据库删除表相关项失败！";
             }
             if(isRight)
                 return Result.success(res);
@@ -307,8 +326,8 @@ public class UserController {
     {
         try {
             System.out.println("delete project...");
-            String projectName = object.getString("projectName");
-            if(userDao.deleteProject(projectName))
+            String projectId = object.getString("projectId");
+            if(userDao.deleteProject(projectId))
                 return Result.success();
             else
                 return Result.fail();

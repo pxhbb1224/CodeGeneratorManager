@@ -33,6 +33,12 @@ public interface UserMapper {
     List<String> getTable(String projectId);
 
     /**
+     * 获取根据表id获取表名
+     * @param tableId
+     * @return
+     */
+    String getTableName(String tableId);
+    /**
      * 获取对应表的生成时间
      * @param tableName
      * @return
@@ -69,7 +75,7 @@ public interface UserMapper {
      * @param projectId
      * @param tableId
      */
-    void addProject(@Param("projectId") String projectId, @Param("tableId") String tableId);
+    void addProject(@Param("relationId") String relationId, @Param("projectId") String projectId, @Param("tableId") String tableId);
 
     /**
      * 删除特定表在project表中的记录

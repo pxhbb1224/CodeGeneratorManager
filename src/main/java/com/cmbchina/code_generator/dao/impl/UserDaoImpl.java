@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao{
             String str = FormatNameUtils.formatToCreateSql(table);
             userMapper.createTable(str);//创建数据库表
             userMapper.insertTable(tableId, tableName, table.getGenerateTime());//添加table_info表记录
-            return isTableExists(tableId);
+            return isTableExists(tableId) && isExistsInTable(tableId);
         }
         catch(Exception e)
         {
@@ -53,8 +53,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     /**
-     * 返回表是否存在(同时检查数据库中和table_info中的记录)
-     * 参数实际上是"table_name/tableId"
+     * 返回表是否存在于数据库中
      * @param tableId
      * @return
      */
@@ -63,8 +62,26 @@ public class UserDaoImpl implements UserDao{
     {
         try
         {
-            return (userMapper.isTableExists('%' + tableId) +
-                    userMapper.isExistsInTable(tableId) == 2 ? true : false);
+            return userMapper.isTableExists('%' + tableId) == 1 ? true : false;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 返回table_info表中是否存在记录
+     * @param tableId
+     * @return
+     */
+    @Override
+    public boolean isExistsInTable(String tableId)
+    {
+        try
+        {
+            return userMapper.isExistsInTable(tableId) == 1 ? true : false;
         }
         catch(Exception e)
         {
@@ -141,10 +158,11 @@ public class UserDaoImpl implements UserDao{
     public boolean replaceTable(Table table)
     {
         String tableId = table.getTableId();
-        if(tableId != null)
+        String tableName = table.getTableName();
+        if(tableId != null && tableId.trim().length() > 0)
             if(dataMap.getTableMap().containsKey(tableId))
             {
-                if(dropTable(table.getTableId()))
+                if(dropTable(tableId, true))
                     if(createTable(table))
                         return dataMap.setTableMap(table);
             }
@@ -173,20 +191,28 @@ public class UserDaoImpl implements UserDao{
 
     /**
      * 数据库中删除表，同时删除table_info和project表中记录
+     * 布尔值代表是否忽略删除项目表中的记录
+     * 尽量要在本地表结构存在之前执行，否则要从数据库中获取tableName
      * @param tableId
+     * @param leaveProject
      * @return
      */
     @Override
-    public boolean dropTable(String tableId) {
+    public boolean dropTable(String tableId, boolean leaveProject) {
         try
         {
-            String tableName = dataMap.getTableName(tableId);
-            String str = FormatNameUtils.formatToDropSql(tableName + "/" + tableId);
+            String tableName = dataMap.getTableName(tableId) == null ?
+                    userMapper.getTableName(tableId) : dataMap.getTableName(tableId);
+            String str = FormatNameUtils.formatToDropSql(dataMap.getTableName(tableId) + "_" + tableId);
             userMapper.dropTable(str);//删除数据库表
             userMapper.deleteTable(tableId);//删除table_info表中记录
-            userMapper.deleteProject(tableId);//删除project表中记录
-            boolean temp = userMapper.isExistsInProject(tableId) == 0 ? false : true;//确认记录是否存在与project表中
-            return !isTableExists(tableId) && !temp;
+            boolean temp = false;
+            if(!leaveProject)
+            {
+                userMapper.deleteProject(tableId);//删除project表中记录
+                temp = userMapper.isExistsInProject(tableId) == 0 ? false : true;//确认记录是否存在与project表中
+            }
+            return !isTableExists(tableId) && !isExistsInTable(tableId) && !temp;
         }
         catch(Exception e)
         {
@@ -205,7 +231,8 @@ public class UserDaoImpl implements UserDao{
     public boolean insertProject(String projectId, String tableId)
     {
         try{
-            userMapper.addProject(projectId, tableId);
+            String relationId = projectId + "/" + tableId;
+            userMapper.addProject(relationId, projectId, tableId);
             return userMapper.isExistsInProject(tableId) == 0 ? false : true;
         }catch (Exception e)
         {
@@ -227,13 +254,13 @@ public class UserDaoImpl implements UserDao{
             List<String> tableList = dataMap.deleteMap(projectId);
             for(String tableId : tableList)
             {
-                if(dropTable(tableId))//删除数据库中表以及table表中的记录
+                if(dropTable(tableId, false))//删除数据库中表以及table_info表中的记录
                 {
-                    System.out.println("删除数据库表" + dataMap.getTableName(tableId) + "成功！");
+                    System.out.println("删除数据库表" + tableId + "成功！");
                 }
                 else
                 {
-                    System.out.println("删除数据库表" + dataMap.getTableName(tableId) + "失败！");
+                    System.out.println("删除数据库表" + tableId + "失败！");
                 }
 
             }
@@ -439,8 +466,8 @@ public class UserDaoImpl implements UserDao{
         if(tableColumnsList.size() == 0)
             return t;
         String tableName = tableColumnsList.get(0).getTableName();
-        t.setTableId(tableName.substring(tableName.lastIndexOf("/") + 1));
-        t.setTableName(tableName.substring(0, tableName.lastIndexOf("/")));
+        t.setTableId(tableName.substring(tableName.lastIndexOf("_") + 1));
+        t.setTableName(tableName.substring(0, tableName.lastIndexOf("_")));
         t.setComment(tableColumnsList.get(0).getTableComment());
         t.setGenerateTime(getTime(tableColumnsList.get(0).getTableName()));
         for(TableColumns column : tableColumnsList)
