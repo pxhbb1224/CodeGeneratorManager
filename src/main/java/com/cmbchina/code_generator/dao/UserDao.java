@@ -65,7 +65,7 @@ public interface UserDao {
     boolean replaceTable(Table table);//
 
     /**
-     * 删除结构中的项目和表的映射,projectId为空时删除所有相关映射
+     * 删除对应项目结构中的表，返回值代表需不需要删除数据库表
      * @param projectId
      * @param tableId
      * @return

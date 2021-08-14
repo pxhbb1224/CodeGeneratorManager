@@ -29,16 +29,16 @@ public class DataMap {
             if(!tableMap.containsKey(tableId))//如果不存在对应表
             {
                 tableMap.put(tableId, table);
+                if(!referenceNum.containsKey(tableId)) //修改表引用次数
+                    referenceNum.put(tableId, 1);
             }
             else //如果存在对应表
             {
-                tableMap.replace(tableId, table);
+                if(referenceNum.containsKey(tableId))
+                    referenceNum.replace(tableId, referenceNum.get(tableId) + 1);
+                else
+                    referenceNum.put(tableId, 1);
             }
-            if(referenceNum.containsKey(tableId)) //修改表引用次数
-                referenceNum.replace(tableId, referenceNum.get(tableId) + 1);
-            else
-                referenceNum.put(tableId, 1);
-
         }
         if(relation != null)
             if(!relationMap.containsKey(relation.getProjectId() + "/" + relation.getTableId()))
@@ -229,20 +229,38 @@ public class DataMap {
      * @param projectId
      * @param tableId
      */
-    public void deleteRelationMap(String projectId, String tableId)
+    public boolean deleteRelationMap(String projectId, String tableId)
     {
+        List<String> relationIdList = new ArrayList<>();
         for(String relationId : relationMap.keySet())
         {
-            if(projectId != null) {
-                if (relationId.equals(projectId + "/" + tableId))
-                    relationMap.remove(relationId);
+            if(projectId != null && projectId.trim().length() > 0) {
+                if(tableId != null && tableId.trim().length() > 0)
+                    if (relationId.equals(projectId + "/" + tableId))
+                        relationIdList.add(relationId);
+                    else
+                        continue;
+                else
+                {
+                    if (relationId.startsWith(projectId + "/"))
+                        relationIdList.add(relationId);
+                }
             }else
             {
-                if (relationId.endsWith("/" + tableId))
-                    relationMap.remove(relationId);
+                if(tableId != null && tableId.trim().length() > 0)
+                    if (relationId.endsWith("/" + tableId))
+                        relationIdList.add(relationId);
+                    else
+                        continue;
+                else
+                    return false;
             }
         }
-        return;
+        for(String relationId : relationIdList)
+        {
+            relationMap.remove(relationId);
+        }
+        return true;
     }
     /**
      * 清除map内容

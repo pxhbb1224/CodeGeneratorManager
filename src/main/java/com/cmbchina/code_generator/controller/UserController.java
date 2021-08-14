@@ -142,6 +142,62 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
+    @PostMapping("/shareTable")
+    public Result shareTable(@RequestBody JSONObject object)
+    {
+        try{
+            String projectId = object.getString("projectId");
+            String tableId = object.getString("tableId");
+            String res = "";
+            boolean isRight = true;
+            if(userDao.isConfigExists(projectId))
+                if(userDao.isTableExists(tableId) && userDao.isExistsInTable(tableId))
+                {
+                    Table table = new Table();
+                    table.setTableId(tableId);
+                    if(userDao.addTable(projectId, table))
+                    {
+                        res += "项目和表联系添加成功！";
+                        if(userDao.insertProject(projectId, tableId))
+                            res += "项目表记录添加成功！";
+                        else
+                        {
+                            isRight = false;
+                            res += "项目表记录添加失败！";
+                        }
+
+                    }
+                    else
+                    {
+                        isRight = false;
+                        res += "项目与表联系添加失败！";
+                    }
+
+                }
+                else
+                {
+                    isRight = false;
+                    res += "表不存在！";
+                }
+
+            else
+            {
+                isRight = false;
+                res += "项目不存在！";
+            }
+
+            if(isRight)
+                return Result.success(res);
+            else
+                return Result.fail(res);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
     /**
      * @Title:receiveTable
      * @Description:接收并存储表结构，建立数据库表
@@ -288,23 +344,23 @@ public class UserController {
             String projectId = object.getString("projectId");
             String tableId = object.getString("tableId");
             String res = "";
-            if(userDao.dropTable(tableId, false))//尽量先删除数据库中记录,否则要从数据库中取tableName
+            if(userDao.deleteTable(projectId, tableId))
             {
-                res += "数据库删除表相关项成功！";
-                if(userDao.deleteTable(projectId, tableId))
+                res += "项目删除表成功！";
+                if(userDao.dropTable(tableId, false))
                 {
-                    res += "项目删除表成功！";
+                    res += "数据库删除表相关项成功！";
                 }
                 else
                 {
                     isRight = false;
-                    res += "项目删除表失败！";
+                    res += "数据库删除表相关项失败！";
                 }
             }
             else
             {
                 isRight = false;
-                res += "数据库删除表相关项失败！";
+                res += "项目删除表失败！";
             }
             if(isRight)
                 return Result.success(res);

@@ -155,6 +155,7 @@ public class UserDaoImpl implements UserDao{
      * @param table
      * @return
      */
+    @Override
     public boolean replaceTable(Table table)
     {
         String tableId = table.getTableId();
@@ -251,6 +252,7 @@ public class UserDaoImpl implements UserDao{
     {
         if(dataMap.getConfigMap().containsKey(projectId))
         {
+            String projectName = dataMap.getProjectName(projectId);
             List<String> tableList = dataMap.deleteMap(projectId);
             for(String tableId : tableList)
             {
@@ -268,13 +270,13 @@ public class UserDaoImpl implements UserDao{
             //删除配置表中的记录             删除项目表中的记录
             if(dropConfig(projectId) && dropProject(projectId))
             {
-                System.out.println("删除数据库中项目相关项" + dataMap.getProjectName(projectId) + "成功！");
+                System.out.println("删除数据库中项目相关项" + projectName + "成功！");
             }
             else
             {
-                System.out.println("删除数据库中项目相关项" + dataMap.getProjectName(projectId) + "失败！");
+                System.out.println("删除数据库中项目相关项" + projectName + "失败！");
             }
-            System.out.println("删除项目" + dataMap.getProjectName(projectId) + "成功！");
+            System.out.println("删除项目" + projectName + "成功！");
             return true;
         }
         else
