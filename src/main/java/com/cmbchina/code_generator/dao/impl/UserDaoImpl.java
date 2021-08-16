@@ -471,7 +471,7 @@ public class UserDaoImpl implements UserDao{
         t.setTableId(tableName.substring(tableName.lastIndexOf("_") + 1));
         t.setTableName(tableName.substring(0, tableName.lastIndexOf("_")));
         t.setComment(tableColumnsList.get(0).getTableComment());
-        t.setGenerateTime(getTime(tableColumnsList.get(0).getTableName()));
+        t.setGenerateTime(getTime(tableName.substring(tableName.lastIndexOf("_") + 1)));
         for(TableColumns column : tableColumnsList)
         {
             Attribute a = new Attribute();

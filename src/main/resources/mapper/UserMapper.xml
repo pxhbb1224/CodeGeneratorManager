@@ -39,7 +39,7 @@
     SELECT table_name FROM table_info1 where table_id = #{tableId}
     </select>
     <select id="getTime" resultType="String">
-        SELECT generate_time FROM table_info1 where table_name = #{tableName}
+        SELECT generate_time FROM table_info1 where table_id = #{tableId}
     </select>
     <select id="findAll" resultType="com.cmbchina.code_generator.entity.User">
         SELECT * FROM tb_user

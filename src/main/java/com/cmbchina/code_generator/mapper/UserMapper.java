@@ -40,10 +40,10 @@ public interface UserMapper {
     String getTableName(String tableId);
     /**
      * 获取对应表的生成时间
-     * @param tableName
+     * @param tableId
      * @return
      */
-    String getTime(String tableName);
+    String getTime(String tableId);
 
     /**
      *
