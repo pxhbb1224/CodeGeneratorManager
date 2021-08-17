@@ -1,9 +1,6 @@
 package com.cmbchina.code_generator.mapper;
 
-import com.cmbchina.code_generator.entity.Config;
-import com.cmbchina.code_generator.entity.Table;
-import com.cmbchina.code_generator.entity.TableColumns;
-import com.cmbchina.code_generator.entity.User;
+import com.cmbchina.code_generator.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -50,6 +47,20 @@ public interface UserMapper {
      * @return
      */
     List<User> findAll();
+
+    /**
+     * 根据ID获取ProjectData
+     * @param projectId
+     * @return
+     */
+    Config findConfigById(String projectId);
+
+    /**
+     * 根据ID获取Project下table数
+     * @param projectId
+     * @return
+     */
+    Integer findTableCountById(String projectId);
 
     /**
      * 从config表中删除配置

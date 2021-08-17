@@ -204,7 +204,11 @@ public class UserDaoImpl implements UserDao{
         {
             String tableName = dataMap.getTableName(tableId) == null ?
                     userMapper.getTableName(tableId) : dataMap.getTableName(tableId);
-            String str = FormatNameUtils.formatToDropSql(dataMap.getTableName(tableId) + "_" + tableId);
+            String str = FormatNameUtils.formatToDropSql(tableName + "_" + tableId);
+            dataMap.getTableMap().forEach((key, value) -> {
+                System.out.println(key + "    " + value.getTableName());
+            });
+            System.out.println("删除表SQL " + str);
             userMapper.dropTable(str);//删除数据库表
             userMapper.deleteTable(tableId);//删除table_info表中记录
             boolean temp = false;

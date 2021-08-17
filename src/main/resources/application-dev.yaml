@@ -27,11 +27,11 @@ codegenerator:
     #模板的总路径(不可修改)
     template-base-path: classpath:template/
     #生成文件的总路径-绝对路径(可修改)
-    write-file-base-path: C:\Users\lenovo\Documents\GitHub\CodeGeneratorManager\src\main\resources\result
+    write-file-base-path: D:\CMB\backup_new\CodeGeneratorManager\src\main\resources\result\
     #数据库表前缀(可修改)
     table-prefix:
     #mybatis生成的路径 (可修改)
-    mapper-path: C:\Users\lenovo\Documents\GitHub\CodeGeneratorManager\src\main\resources\result
+    mapper-path: D:\CMB\backup_new\CodeGeneratorManager\src\main\resources\result\
 
 #showSql
 logging:

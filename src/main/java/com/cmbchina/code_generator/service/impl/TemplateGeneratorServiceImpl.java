@@ -357,6 +357,7 @@ public class TemplateGeneratorServiceImpl implements TemplateGeneratorService{
         {
             List<Table> tableList = userData.getTableList();
             Config config = userData.getConfig();
+            System.out.println(config);
             String classDescription = config.getDescription();
             for(Table table : tableList)
             {

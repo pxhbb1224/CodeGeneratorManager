@@ -75,6 +75,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("/sendProjectData")
+    public Result sendProjectData()
+    {
+        try {
+            userDao.updateData();
+            return Result.success(userDao.getDataMap().formatMap());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
     /**
      * 获取数据库表的信息
      * @param object
@@ -118,6 +131,20 @@ public class UserController {
         }
     }
 
+    @PostMapping("/sendProject")
+    public Result sendProject(@RequestBody JSONObject object){
+        try {
+            String projectId = object.getString("projectId");
+            JSONObject response = new JSONObject();
+            response.put("config", userService.findConfigById(projectId));
+            response.put("count", userService.findTableCountById(projectId));
+            return Result.success(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e);
+        }
+    }
+
     @PostMapping("/sendTable")
     public Result sendTable(@RequestBody JSONObject object) {
 
@@ -130,22 +157,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/sendProjectData")
-    public Result sendProjectData()
-    {
-        try {
-            userDao.updateData();
-            return Result.success(userDao.getDataMap().formatMap());
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            return Result.fail(e);
-        }
-    }
-
     @PostMapping("/shareTable")
     public Result shareTable(@RequestBody JSONObject object)
     {
+        System.out.println("---------------------------------");
         try{
             String projectId = object.getString("projectId");
             String tableId = object.getString("tableId");
@@ -211,15 +226,16 @@ public class UserController {
     {
         try {
             boolean isRight = true;
+            System.out.println("项目ID " + projectId);
             String tableName = table.getTableName();
-            System.out.println("表名" + tableName);
+            System.out.println("表名 " + tableName);
             List<Attribute> attributes = table.getProperties();
             for(Attribute a : attributes)
             {
-                System.out.println("字段" + a);
+                System.out.println("字段 " + a);
             }
             String comment = table.getComment();
-            System.out.println("注释" + comment);
+            System.out.println("注释 " + comment);
             String res = "";
             String tableId = table.getTableId();
             if(tableId == null || tableId.trim().length() == 0) {
@@ -338,11 +354,14 @@ public class UserController {
     @PostMapping("/deleteTable")
     public Result deleteTable(@RequestBody JSONObject object)
     {
+        System.out.println("---------------------------------");
         try{
             System.out.println("delete table...");
             boolean isRight = true;
             String projectId = object.getString("projectId");
             String tableId = object.getString("tableId");
+            System.out.println("项目ID " + projectId);
+            System.out.println("表ID " + tableId);
             String res = "";
             if(userDao.deleteTable(projectId, tableId))
             {
@@ -408,11 +427,10 @@ public class UserController {
     @PostMapping("/generate")
     public void generateCode(@RequestBody JSONObject object,
                              HttpServletResponse response) throws IOException {
-        String projectName = object.getString("projectName");
+        String projectId = object.getString("projectId");
         try{
-            if(generatorService.generateCode(userDao.getUserData(projectName))){
-                System.out.println(projectName);
-                generatorService.downloadCode(projectName, response);
+            if(generatorService.generateCode(userDao.getUserData(projectId))){
+                generatorService.downloadCode(userDao.getUserData(projectId).getConfig().getProjectName(), response);
 //                return Result.success();
             }
         }catch(Exception e) {

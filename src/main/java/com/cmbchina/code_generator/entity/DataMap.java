@@ -29,6 +29,10 @@ public class DataMap {
             if(!tableMap.containsKey(tableId))//如果不存在对应表
             {
                 tableMap.put(tableId, table);
+                //打印当前tableMap
+//                tableMap.forEach((key, value) -> {
+//                    System.out.println(key + "    " + value.getTableName());
+//                });
                 if(!referenceNum.containsKey(tableId)) //修改表引用次数
                     referenceNum.put(tableId, 1);
             }

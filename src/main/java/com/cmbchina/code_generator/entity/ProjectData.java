@@ -2,8 +2,10 @@ package com.cmbchina.code_generator.entity;
 
 import com.cmbchina.code_generator.utils.DateTimeUtils;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ProjectData {
 
     private String id;
