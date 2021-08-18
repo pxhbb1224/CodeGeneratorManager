@@ -54,6 +54,11 @@ public class UserController {
             return Result.fail(e);
         }
     }
+
+    /**
+     * 从数据库中同步DataMap的内容（进入项目主界面时）
+     * @return
+     */
     @GetMapping("/updateData")
     public Result updateData() {
         try {
@@ -65,6 +70,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 获取所有项目配置信息
+     * @return
+     */
     @GetMapping("/getConfig")
     public Result getConfig() {
         try {
@@ -75,6 +84,10 @@ public class UserController {
         }
     }
 
+    /**
+     * 发送所有项目列表信息
+     * @return
+     */
     @GetMapping("/sendProjectData")
     public Result sendProjectData()
     {
@@ -89,7 +102,7 @@ public class UserController {
     }
 
     /**
-     * 获取数据库表的信息
+     * 根据tableId发送数据库表的信息（描述、生成时间）
      * @param object
      * @return
      */
@@ -105,7 +118,7 @@ public class UserController {
     }
 
     /**
-     *
+     * 根据tableId发送数据库表具体的字段信息
      * @param object
      * @return
      */
@@ -120,6 +133,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 根据projectId发送项目具体配置信息
+     * @param object
+     * @return
+     */
     @PostMapping("/sendConfig")
     public Result sendConfig(@RequestBody JSONObject object) {
         try {
@@ -131,6 +149,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 根据projectId发送项目信息
+     * @param object
+     * @return
+     */
     @PostMapping("/sendProject")
     public Result sendProject(@RequestBody JSONObject object){
         try {
@@ -145,6 +168,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 根据projectId发送项目下实体列表信息
+     * @param object
+     * @return
+     */
     @PostMapping("/sendTable")
     public Result sendTable(@RequestBody JSONObject object) {
 
@@ -157,6 +185,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 将tableId对应的table共享给projectId对应的project
+     * @param object
+     * @return
+     */
     @PostMapping("/shareTable")
     public Result shareTable(@RequestBody JSONObject object)
     {
