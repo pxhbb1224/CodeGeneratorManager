@@ -187,6 +187,7 @@ public class UserController {
 
     /**
      * 将tableId对应的table共享给projectId对应的project
+     * isIndependent为0代表不独立，非0代表独立
      * @param object
      * @return
      */
@@ -197,44 +198,86 @@ public class UserController {
         try{
             String projectId = object.getString("projectId");
             String tableId = object.getString("tableId");
+            int isIndependent = object.getIntValue("isIndependent");
             String res = "";
             boolean isRight = true;
-            if(userDao.isConfigExists(projectId))
-                if(userDao.isTableExists(tableId) && userDao.isExistsInTable(tableId))
-                {
-                    Table table = new Table();
-                    table.setTableId(tableId);
-                    if(userDao.addTable(projectId, table))
-                    {
-                        res += "项目和表联系添加成功！";
-                        if(userDao.insertProject(projectId, tableId))
-                            res += "项目表记录添加成功！";
-                        else
-                        {
+            if(isIndependent == 0) {
+                res += "共享项目：";
+                if (userDao.isConfigExists(projectId))
+                    if (userDao.isTableExists(tableId) && userDao.isExistsInTable(tableId)) {
+                        Table table = new Table();
+                        table.setTableId(tableId);
+                        if (userDao.addTable(projectId, table)) {
+                            res += "项目和表联系添加成功！";
+                            if (userDao.insertProject(projectId, tableId))
+                                res += "项目表记录添加成功！";
+                            else {
+                                isRight = false;
+                                res += "项目表记录添加失败！";
+                            }
+
+                        } else {
                             isRight = false;
-                            res += "项目表记录添加失败！";
+                            res += "项目与表联系添加失败！";
                         }
 
-                    }
-                    else
-                    {
+                    } else {
                         isRight = false;
-                        res += "项目与表联系添加失败！";
+                        res += "表不存在！";
                     }
 
+                else {
+                    isRight = false;
+                    res += "项目不存在！";
+                }
+            }
+            else
+            {
+                res += "引入项目：";
+                Table table = userDao.getDataMap().getTable(tableId);
+                if(table != null)
+                {
+                    table.setTableId(UUID.randomUUID().toString().replace("-", ""));
+                    if (userDao.addTable(projectId, table)) {
+                        res += "项目结构添加表成功！";
+                        if (userDao.createTable(table)) {
+                            res += "数据库创建表成功！";
+                            if (userDao.insertProject(projectId, tableId)) {
+                                res += "项目表记录添加成功！";
+                            } else {
+                                res += "项目表记录添加失败！";
+                                isRight = false;
+                                if(userDao.dropTable(tableId, false))
+                                {
+                                    res += "数据库回滚删除表成功！";
+                                    if (userDao.deleteTable(projectId, tableId)) {
+                                        res += "回滚删除项目结构表成功！";
+                                    } else {
+                                        res += "回滚删除项目结构表失败！";
+                                    }
+                                }
+                                else
+                                {
+                                    res += "数据库回滚删除表失败！";
+                                }
+                            }
+                        } else {
+                            res += "数据库创建表失败！";
+                            isRight = false;
+                            if (userDao.deleteTable(projectId, tableId)) {
+                                res += "回滚删除项目结构表成功！";
+                            } else {
+                                res += "回滚删除项目结构表失败！";
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    isRight = false;
                     res += "表不存在！";
+                    isRight = false;
                 }
-
-            else
-            {
-                isRight = false;
-                res += "项目不存在！";
             }
-
             if(isRight)
                 return Result.success(res);
             else
